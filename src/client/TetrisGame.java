@@ -1,5 +1,7 @@
 package client;
 
+import client.queue.Queue;
+
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -11,15 +13,24 @@ public class TetrisGame extends JFrame {
 
     private boolean playing;
     private boolean rewardMode;
+    private boolean gameOver = false;
+
+    private boolean doublePlayer;
+
+    private int level = 0;
 
     private GameBoard myGameBoard;
     private GameBoard opponentGameBoard;
+
+    private Queue<Tetromino> myTetrominoQueue;
+    private Queue<Tetromino> opponentTetrominoQueue;
 
     public TetrisGame(String mode) {
         this.mode = mode;
 
         myGameBoard = new GameBoard();
-        if (mode.equals("Human vs AI") || mode.equals("Battle")) {
+        doublePlayer = mode.equals("Human vs AI") || mode.equals("Battle");
+        if (doublePlayer) {
             opponentGameBoard = new GameBoard();
         }
 
@@ -38,10 +49,10 @@ public class TetrisGame extends JFrame {
                         myGameBoard.moveDown();
                         break;
                     case VK_LEFT:
-                        myGameBoard.moveLeft();
+                        myGameBoard.move(-1);
                         break;
                     case VK_RIGHT:
-                        myGameBoard.moveRight();
+                        myGameBoard.move(1);
                         break;
                 }
             }
@@ -51,6 +62,29 @@ public class TetrisGame extends JFrame {
             }
         });
 
+        new Thread(()->{
+            playing = true;
+            rewardMode = false;
 
+            while (!gameOver) {
+                while (playing) {
+                    // TODO play game algorithm
+                }
+                while (rewardMode){
+                    // TODO reward mode
+                }
+            }
+        }, "player-thread").start();
+
+        if (doublePlayer) {
+            new Thread(() -> {
+                playing = true;
+                rewardMode = false;
+
+                while (!gameOver) {
+                    // TODO receive stuff from server
+                }
+            }, "opponent-thread").start();
+        }
     }
 }
