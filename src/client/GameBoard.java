@@ -9,8 +9,8 @@ public class GameBoard extends JPanel {
     private boolean[][] movable = new boolean[14][25];
     private Color[][] colors = new Color[14][25];
 
-    private int score, level, lines;
-    private Tetromino current, hold, next0, next1, next2;
+    private int score, lines;
+    private Tetromino current, hold, next1, next2, next3;
 
     private int piecePositionX, piecePositionY;
 
@@ -25,7 +25,6 @@ public class GameBoard extends JPanel {
         }
 
         this.score = 0;
-        this.level = 0;
         this.lines = 0;
     }
 
