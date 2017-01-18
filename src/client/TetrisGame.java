@@ -3,88 +3,87 @@ package client;
 import client.queue.Queue;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-import static java.awt.event.KeyEvent.*;
+import java.awt.*;
 
-public class TetrisGame extends JFrame {
-    private String mode;
 
-    private boolean playing;
-    private boolean rewardMode;
-    private boolean gameOver = false;
+abstract class TetrisGame extends JFrame {
+    protected String mode;
 
-    private boolean doublePlayer;
+    protected boolean playing;
+    protected boolean gameOver = false;
 
-    private int level = 0;
+    protected int level = 1;
 
-    private GameBoard myGameBoard;
-    private GameBoard opponentGameBoard;
+    public TetrisGame() {
+        getContentPane().setLayout(null);
 
-    private Queue<Tetromino> myTetrominoQueue;
-    private Queue<Tetromino> opponentTetrominoQueue;
+        JLabel lblNewLabel = new JLabel("");
+        ImageIcon img = new ImageIcon("resources/tetronimo.png");
+        lblNewLabel.setIcon(img);
+        lblNewLabel.setBounds(459, 39, 460, 51);
+        getContentPane().add(lblNewLabel);
 
-    public TetrisGame(String mode) {
-        this.mode = mode;
+        JLabel lblLevel = new JLabel("LEVEL " + level);
+        lblLevel.setFont(new Font("Tahoma", Font.BOLD, 16));
+        lblLevel.setBounds(612, 89, 77, 28);
+        getContentPane().add(lblLevel);
 
-        myGameBoard = new GameBoard();
-        doublePlayer = mode.equals("Human vs AI") || mode.equals("Battle");
-        if (doublePlayer) {
-            opponentGameBoard = new GameBoard();
-        }
+        JLabel lblHold = new JLabel("Hold");
+        lblHold.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblHold.setBounds(42, 208, 100, 22);
+        lblHold.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(lblHold);
 
-        this.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+        JLabel lblNewLabel_1 = new JLabel("");
+        ImageIcon img1 = new ImageIcon("resources/hold.png");
+        lblNewLabel_1.setIcon(img1);
+        lblNewLabel_1.setBounds(60, 241, 64, 64);
+        getContentPane().add(lblNewLabel_1);
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()){
-                    case VK_UP:
-                        myGameBoard.rotate();
-                        break;
-                    case VK_DOWN:
-                        myGameBoard.moveDown();
-                        break;
-                    case VK_LEFT:
-                        myGameBoard.move(-1);
-                        break;
-                    case VK_RIGHT:
-                        myGameBoard.move(1);
-                        break;
-                }
-            }
+        JLabel lblScore = new JLabel("Score");
+        lblScore.setHorizontalAlignment(SwingConstants.CENTER);
+        lblScore.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblScore.setBounds(42, 416, 100, 22);
+        getContentPane().add(lblScore);
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
+        JTextField textField = new JTextField();
+        textField.setBounds(42, 449, 100, 20);
+        getContentPane().add(textField);
+        textField.setColumns(10);
 
-        new Thread(()->{
-            playing = true;
-            rewardMode = false;
+        JLabel lblLines = new JLabel("Lines");
+        lblLines.setHorizontalAlignment(SwingConstants.CENTER);
+        lblLines.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblLines.setBounds(42, 491, 100, 22);
+        getContentPane().add(lblLines);
 
-            while (!gameOver) {
-                while (playing) {
-                    // TODO play game algorithm
-                }
-                while (rewardMode){
-                    // TODO reward mode
-                }
-            }
-        }, "player-thread").start();
+        JTextField textField_1 = new JTextField();
+        textField_1.setColumns(10);
+        textField_1.setBounds(42, 524, 100, 20);
+        getContentPane().add(textField_1);
 
-        if (doublePlayer) {
-            new Thread(() -> {
-                playing = true;
-                rewardMode = false;
+        JLabel lblNext = new JLabel("Next");
+        lblNext.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNext.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNext.setBounds(522, 208, 100, 22);
+        getContentPane().add(lblNext);
 
-                while (!gameOver) {
-                    // TODO receive stuff from server
-                }
-            }, "opponent-thread").start();
-        }
+        JLabel label_1 = new JLabel("");
+        label_1.setBounds(540, 241, 64, 64);
+        getContentPane().add(label_1);
+
+        JLabel label = new JLabel("");
+        label.setBounds(540, 316, 64, 64);
+        getContentPane().add(label);
+
+        JLabel label_2 = new JLabel("");
+        label_2.setBounds(540, 391, 64, 64);
+        getContentPane().add(label_2);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setResizable(false);
+        setLocationRelativeTo(null);
     }
 }
