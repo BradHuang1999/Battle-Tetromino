@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="166783d5-f3e8-445f-b322-5098912c521c" name="Default" comment="0118 commit: functional solo gameb">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/AIGame.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/DoublePlayerGame.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/HumanVsAIGame.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/OnlineBattleGame.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/client/SoloGame.java" />
+    <list default="true" id="166783d5-f3e8-445f-b322-5098912c521c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/GameBoard.java" afterPath="$PROJECT_DIR$/src/client/GameBoard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/LogInGUI.java" afterPath="$PROJECT_DIR$/src/client/LogInGUI.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/DoublePlayerGame.java" afterPath="$PROJECT_DIR$/src/client/DoublePlayerGame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/SinglePlayerGame.java" afterPath="$PROJECT_DIR$/src/client/SinglePlayerGame.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/SoloGame.java" afterPath="$PROJECT_DIR$/src/client/SoloGame.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/TetrisGame.java" afterPath="$PROJECT_DIR$/src/client/TetrisGame.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/Tetromino.java" afterPath="$PROJECT_DIR$/src/client/Tetromino.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/WaitLoungeGUI.java" afterPath="$PROJECT_DIR$/src/client/WaitLoungeGUI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/queue/DoublyNode.java" afterPath="$PROJECT_DIR$/src/client/queue/DoublyNode.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/queue/Node.java" afterPath="$PROJECT_DIR$/src/client/queue/Node.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/client/queue/Queue.java" afterPath="$PROJECT_DIR$/src/client/queue/Queue.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/server/Server.java" afterPath="$PROJECT_DIR$/src/server/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/server/User.java" afterPath="$PROJECT_DIR$/src/server/User.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -37,8 +25,8 @@
       <file leaf-file-name="TetrisGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/TetrisGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="9" column="9" lean-forward="false" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+            <state relative-caret-position="432">
+              <caret line="85" column="28" lean-forward="false" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -49,18 +37,18 @@
       <file leaf-file-name="SinglePlayerGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/SinglePlayerGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+            <state relative-caret-position="408">
+              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DoublePlayerGame.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DoublePlayerGame.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/client/DoublePlayerGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="8" lean-forward="false" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
+            <state relative-caret-position="912">
+              <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="48" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -71,8 +59,8 @@
       <file leaf-file-name="SoloGame.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/SoloGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1224">
-              <caret line="51" column="20" lean-forward="false" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
+            <state relative-caret-position="144">
+              <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#261#262#0" expanded="true" />
@@ -82,7 +70,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WaitLoungeGUI.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WaitLoungeGUI.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/client/WaitLoungeGUI.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="183">
@@ -96,23 +84,10 @@
         <entry file="file://$PROJECT_DIR$/src/client/AIGame.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="216">
-              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+              <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="1" />
               <folding>
                 <element signature="e#124#125#0" expanded="true" />
                 <element signature="e#147#148#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HumanVsAIGame.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/client/HumanVsAIGame.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-              <folding>
-                <element signature="e#138#139#0" expanded="true" />
-                <element signature="e#161#162#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -190,11 +165,11 @@
         <option value="$PROJECT_DIR$/src/client/Tetromino.java" />
         <option value="$PROJECT_DIR$/src/client/SinglePlayGame.java" />
         <option value="$PROJECT_DIR$/src/client/AIGame.java" />
+        <option value="$PROJECT_DIR$/src/client/WaitLoungeGUI.java" />
         <option value="$PROJECT_DIR$/src/client/SoloGame.java" />
         <option value="$PROJECT_DIR$/src/client/TetrisGame.java" />
         <option value="$PROJECT_DIR$/src/client/SinglePlayerGame.java" />
         <option value="$PROJECT_DIR$/src/client/DoublePlayerGame.java" />
-        <option value="$PROJECT_DIR$/src/client/WaitLoungeGUI.java" />
       </list>
     </option>
   </component>
@@ -654,28 +629,43 @@
       <option name="presentableId" value="Default" />
       <updated>1483916497986</updated>
     </task>
+    <task id="LOCAL-00001" summary="0118 commit: functional solo game">
+      <created>1484778220740</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1484778220740</updated>
+    </task>
+    <task id="LOCAL-00002" summary="0118 commit: functional solo game">
+      <created>1484778277036</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1484778277036</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="1942" height="1042" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32990867" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1780822" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32990867" sideWeight="0.50208336" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2043379" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2043379" sideWeight="0.49791667" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15729167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15729167" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -695,7 +685,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="0118 commit: functional solo gameb" />
-    <option name="LAST_COMMIT_MESSAGE" value="0118 commit: functional solo gameb" />
+    <MESSAGE value="0118 commit: functional solo game" />
+    <option name="LAST_COMMIT_MESSAGE" value="0118 commit: functional solo game" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -786,17 +777,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/AIGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-          <folding>
-            <element signature="e#124#125#0" expanded="true" />
-            <element signature="e#147#148#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/client/SinglePlayGame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -812,26 +792,6 @@
           <folding>
             <element signature="e#144#145#0" expanded="true" />
             <element signature="e#167#168#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/TetrisGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="9" lean-forward="false" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/DoublePlayerGame.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="8" lean-forward="false" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -855,18 +815,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/SinglePlayerGame.java">
+    <entry file="file://$PROJECT_DIR$/src/client/WaitLoungeGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
+        <state relative-caret-position="183">
+          <caret line="135" column="26" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/client/SoloGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1224">
-          <caret line="51" column="20" lean-forward="false" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
+        <state relative-caret-position="144">
+          <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#261#262#0" expanded="true" />
@@ -875,11 +835,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/client/WaitLoungeGUI.java">
+    <entry file="file://$PROJECT_DIR$/src/client/TetrisGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="183">
-          <caret line="135" column="26" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
+        <state relative-caret-position="432">
+          <caret line="85" column="28" lean-forward="false" selection-start-line="85" selection-start-column="28" selection-end-line="85" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/SinglePlayerGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/AIGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="1" />
+          <folding>
+            <element signature="e#124#125#0" expanded="true" />
+            <element signature="e#147#148#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/client/DoublePlayerGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="912">
+          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="48" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

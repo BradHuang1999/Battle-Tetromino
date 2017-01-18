@@ -14,6 +14,7 @@ abstract class SinglePlayerGame extends TetrisGame{
         super();
 
         setSize(680, 768);
+        setLocationRelativeTo(null);
 
         myGameBoard = new GameBoard();
         myGameBoard.setBounds(152, 131, 360, 598);

@@ -20,6 +20,7 @@ abstract class DoublePlayerGame extends TetrisGame {
         super();
 
         setSize(1360, 768);
+        setLocationRelativeTo(null);
 
         myGameBoard = new GameBoard();
         myGameBoard.setBounds(152, 131, 360, 598);
@@ -28,7 +29,6 @@ abstract class DoublePlayerGame extends TetrisGame {
         opponentGameBoard = new GameBoard();
         opponentGameBoard.setBounds(783, 131, 360, 598);
         getContentPane().add(opponentGameBoard);
-
 
         JLabel label_3 = new JLabel("Next");
         label_3.setHorizontalAlignment(SwingConstants.CENTER);

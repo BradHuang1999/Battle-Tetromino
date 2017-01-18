@@ -50,6 +50,7 @@ public class SoloGame extends SinglePlayerGame {
         );
 
         new Thread(() -> {
+            playing = true;
             myGameBoard.newTetromino(new Tetromino());
             while (!gameOver) {
                 while (playing) {

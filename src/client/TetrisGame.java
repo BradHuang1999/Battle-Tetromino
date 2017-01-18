@@ -84,6 +84,5 @@ abstract class TetrisGame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setResizable(false);
-        setLocationRelativeTo(null);
     }
 }
