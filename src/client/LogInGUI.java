@@ -1,6 +1,8 @@
 package client;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
@@ -66,39 +68,52 @@ public class LogInGUI extends JFrame{
         lblCooseAPic.setBounds(78, 95, 109, 14);
         getContentPane().add(lblCooseAPic);
 
+        ActionListener imgButtonAC = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO set up a variable that indicates which image is clicked
+                // TODO also indicate that the button is clicked
+            }
+        };
+
         ImageIcon img2 = new ImageIcon("resources/emojiDevil.png");
-        Image newimg2 = img2.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JLabel lblNewLabel_1 = new JLabel("");
-        lblNewLabel_1.setIcon(new ImageIcon(newimg2));
-        lblNewLabel_1.setBounds(197, 90, 32, 32);
-        getContentPane().add(lblNewLabel_1);
+        Image scaledImg2 = img2.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+        JButton btnImg2 = new JButton("");
+        btnImg2.setIcon(new ImageIcon(scaledImg2));
+        btnImg2.setBounds(197, 90, 32, 32);
+        btnImg2.addActionListener(imgButtonAC);
+        getContentPane().add(btnImg2);
 
         ImageIcon img3 = new ImageIcon("resources/emojiFun.png");
-        Image newimg3 = img3.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JLabel label = new JLabel("");
-        label.setIcon(new ImageIcon(newimg3));
-        label.setBounds(239, 90, 32, 32);
-        getContentPane().add(label);
-
+        Image scaledImg3 = img3.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+        JButton btnImg3 = new JButton("");
+        btnImg3.setIcon(new ImageIcon(scaledImg3));
+        btnImg3.setBounds(239, 90, 32, 32);
+        btnImg3.addActionListener(imgButtonAC);
+        getContentPane().add(btnImg3);
+        
         ImageIcon img4 = new ImageIcon("resources/emojiHaha.png");
-        Image newimg4 = img4.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JLabel label_1 = new JLabel("");
-        label_1.setIcon(new ImageIcon(newimg4));
-        label_1.setBounds(281, 90, 32, 32);
-        getContentPane().add(label_1);
+        Image scaledImg4 = img4.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+        JButton btnImg4 = new JButton("");
+        btnImg4.setIcon(new ImageIcon(scaledImg4));
+        btnImg4.setBounds(281, 90, 32, 32);
+        btnImg4.addActionListener(imgButtonAC);
+        getContentPane().add(btnImg4);
 
         ImageIcon img5 = new ImageIcon("resources/emojiLaugh.png");
-        Image newimg5 = img5.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JLabel label_2 = new JLabel("");
-        label_2.setIcon(new ImageIcon(newimg5));
-        label_2.setBounds(323, 90, 32, 32);
-        getContentPane().add(label_2);
+        Image scaledImg5 = img5.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+        JButton btnImg5 = new JButton("");
+        btnImg5.setIcon(new ImageIcon(scaledImg5));
+        btnImg5.setBounds(323, 90, 32, 32);
+        btnImg5.addActionListener(imgButtonAC);
+        getContentPane().add(btnImg5);
 
         ImageIcon img6 = new ImageIcon("resources/emojiSmirk.png");
-        Image newimg6 = img6.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JLabel label_3 = new JLabel("");
-        label_3.setIcon(new ImageIcon(newimg6));
-        label_3.setBounds(365, 90, 32, 32);
-        getContentPane().add(label_3);
+        Image scaledImg6 = img6.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
+        JButton btnImg6 = new JButton("");
+        btnImg6.setIcon(new ImageIcon(scaledImg6));
+        btnImg6.setBounds(365, 90, 32, 32);
+        btnImg6.addActionListener(imgButtonAC);
+        getContentPane().add(btnImg6);
     }
 }

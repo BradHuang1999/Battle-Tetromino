@@ -15,11 +15,6 @@ import java.util.Vector;
 public class WaitLoungeGUI extends JFrame {
 	private JTable table;
 	private JTextField textField;
-
-	public static void main(String[] args) {
-		new WaitLoungeGUI().setVisible(true);
-	}
-
 	public WaitLoungeGUI() {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -79,9 +74,15 @@ public class WaitLoungeGUI extends JFrame {
 		rdbtnBattle.setBounds(389, 392, 109, 23);
 		getContentPane().add(rdbtnBattle);
 		
-		JRadioButton rdbtnHumanVs = new JRadioButton("Human Vs AI");
+		JRadioButton rdbtnHumanVs = new JRadioButton("Human vs AI");
 		rdbtnHumanVs.setBounds(507, 392, 109, 23);
 		getContentPane().add(rdbtnHumanVs);
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(rdbtnNewRadioButton);
+		group.add(rdbtnWha);
+		group.add(rdbtnBattle);
+		group.add(rdbtnHumanVs);
 		
 		JButton btnNewButton = new JButton("Game!");
 		btnNewButton.setBounds(441, 422, 126, 34);
@@ -99,7 +100,7 @@ public class WaitLoungeGUI extends JFrame {
 	        	data.add("Battle");
 	        	data.add("1/1");
 	        }else if(rdbtnHumanVs.isSelected()){
-	        	data.add("Human Vs AI");
+	        	data.add("Human vs AI");
 	        	data.add("1/2");
 	        }
 	        data.add("Play");
@@ -138,8 +139,21 @@ public class WaitLoungeGUI extends JFrame {
         		JButton jButton = new JButton("play");
         		jButton.addActionListener(e ->{
         			Object mode = table.getValueAt(row, 1);
-//        			new TetrisGame();
-        			lastSelected = value.toString();
+        			switch (mode.toString()){
+                        case "Solo":
+                            new SoloGame().setVisible(true);
+                            break;
+                        case "Watch AI":
+                            new AIGame().setVisible(true);
+                            break;
+                        case "Human VS AI":
+                            new HumanVsAIGame().setVisible(true);
+                            break;
+                        case "Battle":
+                            new OnlineBattleGame().setVisible(true);
+                            break;
+					}
+        			lastSelected = "Play";
         		});
         		return jButton;
         	}
@@ -161,5 +175,9 @@ public class WaitLoungeGUI extends JFrame {
 	    public boolean shouldSelectCell(EventObject anEvent) {
 	        return false;
 	    }
+	}
+	
+	public static void main(String[] args) {
+		new WaitLoungeGUI().setVisible(true);
 	}
 }
