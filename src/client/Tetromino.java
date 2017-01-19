@@ -1,5 +1,6 @@
 package client;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
@@ -8,6 +9,7 @@ public class Tetromino {
     private Color tetrominoColor;
 
     private int phase = 0;
+    private ImageIcon img;
 
     private boolean[][][] shapes = new boolean[4][][];
 
@@ -15,33 +17,36 @@ public class Tetromino {
      * generate a tetromino based on given type
      * @param type type of tetromino
      */
-    public Tetromino(char type) {
+    public Tetromino(char type){
         this.tetrominoType = type;
-        switch (type) {
+        this.phase = 0;
+        this.img = new ImageIcon("resources/" + this.tetrominoType + ".png");
+
+        switch (type){
             case 'I':
                 this.shapes[0] = new boolean[][]{
-                        {false, false, false, true},
-                        {false, false, false, true},
-                        {false, false, false, true},
-                        {false, false, false, true}};
+                        {true, true, true, true},
+                        {false, false, false, false},
+                        {false, false, false, false},
+                        {false, false, false, false}};
 
                 this.shapes[1] = new boolean[][]{
-                        {true, true, true, true},
-                        {false, false, false, false},
-                        {false, false, false, false},
-                        {false, false, false, false}};
-
-                this.shapes[2] = new boolean[][]{
                         {false, false, false, true},
                         {false, false, false, true},
                         {false, false, false, true},
                         {false, false, false, true}};
 
-                this.shapes[3] = new boolean[][]{
+                this.shapes[2] = new boolean[][]{
                         {true, true, true, true},
                         {false, false, false, false},
                         {false, false, false, false},
                         {false, false, false, false}};
+
+                this.shapes[3] = new boolean[][]{
+                        {false, false, false, true},
+                        {false, false, false, true},
+                        {false, false, false, true},
+                        {false, false, false, true}};
 
                 this.tetrominoColor = new Color(250, 100, 0);
                 break;
@@ -160,26 +165,26 @@ public class Tetromino {
 
             case 'T':
                 this.shapes[0] = new boolean[][]{
-                        {false, true, false, false},
-                        {true, true, true, false},
                         {false, false, false, false},
+                        {true, true, true, false},
+                        {false, true, false, false},
                         {false, false, false, false}};
 
                 this.shapes[1] = new boolean[][]{
                         {false, true, false, false},
-                        {true, true, false, false},
+                        {false, true, true, false},
                         {false, true, false, false},
                         {false, false, false, false}};
 
                 this.shapes[2] = new boolean[][]{
-                        {false, false, false, false},
-                        {true, true, true, false},
                         {false, true, false, false},
+                        {true, true, true, false},
+                        {false, false, false, false},
                         {false, false, false, false}};
 
                 this.shapes[3] = new boolean[][]{
                         {false, true, false, false},
-                        {false, true, true, false},
+                        {true, true, false, false},
                         {false, true, false, false},
                         {false, false, false, false}};
 
@@ -200,21 +205,20 @@ public class Tetromino {
                         {false, false, false, false}};
 
                 this.shapes[2] = new boolean[][]{
-                        {false, false, true, false},
-                        {true, true, true, false},
                         {false, false, false, false},
+                        {true, false, false, false},
+                        {true, true, true, false},
                         {false, false, false, false}};
 
                 this.shapes[3] = new boolean[][]{
-                        {false, true, false, false},
-                        {false, true, false, false},
-                        {true, true, false, false},
+                        {false, false, true, false},
+                        {false, false, true, false},
+                        {false, true, true, false},
                         {false, false, false, false}};
 
                 this.tetrominoColor = new Color(250, 0, 100);
                 break;
         }
-        this.phase = 0;
     }
 
     /**
@@ -244,5 +248,7 @@ public class Tetromino {
         return tetrominoColor;
     }
 
-
+    public ImageIcon getImg() {
+        return img;
+    }
 }

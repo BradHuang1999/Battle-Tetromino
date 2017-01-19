@@ -1,7 +1,5 @@
 package client;
 
-import client.GameBoard;
-import client.TetrisGame;
 import client.queue.*;
 
 import javax.swing.*;
@@ -11,10 +9,17 @@ import java.awt.*;
  * Created by bradh on 1/18/2017.
  */
 abstract class DoublePlayerGame extends TetrisGame {
-    protected GameBoard myGameBoard, opponentGameBoard;
-    protected Queue<Tetromino> myTetrominoQueue, opponentTetrominoQueue;
+    protected GameBoard opponentGameBoard;
+
+    protected Tetromino opponentCurrentTetromino, opponentHoldTetromino = null;
+    protected Queue<Tetromino> opponentTetrominoQueue = new Queue<Tetromino>();
 
     protected boolean rewardMode;
+
+    protected int opponentScore, opponentLines = 0;
+
+    protected JLabel opponentHoldLabel, opponentScoreLabel, opponentLineLabel;
+    protected JLabel[] opponentNextLabels = new JLabel[3];
 
     public DoublePlayerGame(){
         super();
@@ -23,63 +28,97 @@ abstract class DoublePlayerGame extends TetrisGame {
         setLocationRelativeTo(null);
 
         myGameBoard = new GameBoard();
-        myGameBoard.setBounds(152, 131, 360, 598);
+        myGameBoard.setBounds(170, 155, 338, 546);
         getContentPane().add(myGameBoard);
 
         opponentGameBoard = new GameBoard();
-        opponentGameBoard.setBounds(783, 131, 360, 598);
+        opponentGameBoard.setBounds(170 + 680, 155, 338, 546);
         getContentPane().add(opponentGameBoard);
 
-        JLabel label_3 = new JLabel("Next");
-        label_3.setHorizontalAlignment(SwingConstants.CENTER);
-        label_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        label_3.setBounds(1153, 208, 100, 22);
-        getContentPane().add(label_3);
+        iconLabel.setBounds(490, 39, 400, 50);
+        levelLabel.setBounds(620, 100, 120, 36);
 
-        JLabel label_4 = new JLabel("");
-        label_4.setBounds(1171, 241, 64, 64);
-        getContentPane().add(label_4);
+        //
+        JLabel lblHold = new JLabel("Hold");
+        lblHold.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        lblHold.setBounds(0 + 680, 220, 170, 20);
+        lblHold.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(lblHold);
 
-        JLabel label_5 = new JLabel("");
-        label_5.setBounds(1171, 316, 64, 64);
-        getContentPane().add(label_5);
+        opponentHoldLabel = new JLabel("");
+        ImageIcon img1 = new ImageIcon("resources/hold.png");
+        opponentHoldLabel.setIcon(img1);
+        opponentHoldLabel.setBounds(53 + 680, 250, 64, 64);
+        getContentPane().add(opponentHoldLabel);
 
-        JLabel label_6 = new JLabel("");
-        label_6.setBounds(1171, 391, 64, 64);
-        getContentPane().add(label_6);
+        JLabel lblScore = new JLabel("Score");
+        lblScore.setHorizontalAlignment(SwingConstants.CENTER);
+        lblScore.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblScore.setBounds(0 + 680, 440, 170, 22);
+        getContentPane().add(lblScore);
 
-        JLabel label_7 = new JLabel("Hold");
-        label_7.setHorizontalAlignment(SwingConstants.CENTER);
-        label_7.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        label_7.setBounds(673, 208, 100, 22);
-        getContentPane().add(label_7);
+        opponentScoreLabel = new JLabel("0");
+        opponentScoreLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+        opponentScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        opponentScoreLabel.setBounds(0 + 680, 470, 170, 22);
+        getContentPane().add(opponentScoreLabel);
 
-        JLabel label_8 = new JLabel("");
-        ImageIcon img8 = new ImageIcon("resources/hold.png");
-        label_8.setIcon(img8);
-        label_8.setBounds(690, 241, 64, 64);
-        getContentPane().add(label_8);
+        JLabel lblLines = new JLabel("Lines");
+        lblLines.setHorizontalAlignment(SwingConstants.CENTER);
+        lblLines.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblLines.setBounds(0 + 680, 525, 170, 22);
+        getContentPane().add(lblLines);
 
-        JLabel label_9 = new JLabel("Score");
-        label_9.setHorizontalAlignment(SwingConstants.CENTER);
-        label_9.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        label_9.setBounds(673, 416, 100, 22);
-        getContentPane().add(label_9);
+        opponentLineLabel = new JLabel("0");
+        opponentLineLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+        opponentLineLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        opponentLineLabel.setBounds(0 + 680, 555, 170, 22);
+        getContentPane().add(opponentLineLabel);
 
-        JTextField textField_2 = new JTextField();
-        textField_2.setColumns(10);
-        textField_2.setBounds(673, 449, 100, 20);
-        getContentPane().add(textField_2);
+        JLabel lblNext = new JLabel("Next");
+        lblNext.setHorizontalAlignment(SwingConstants.CENTER);
+        lblNext.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblNext.setBounds(509 + 680, 208, 170, 22);
+        getContentPane().add(lblNext);
 
-        JLabel label_10 = new JLabel("Lines");
-        label_10.setHorizontalAlignment(SwingConstants.CENTER);
-        label_10.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        label_10.setBounds(673, 491, 100, 22);
-        getContentPane().add(label_10);
+        opponentNextLabels[0] = new JLabel("");
+        opponentNextLabels[0].setBounds(562 + 680, 241, 64, 64);
+        getContentPane().add(opponentNextLabels[0]);
 
-        JTextField textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        textField_3.setBounds(673, 524, 100, 20);
-        getContentPane().add(textField_3);
+        opponentNextLabels[1] = new JLabel("");
+        opponentNextLabels[1].setBounds(562 + 680, 316, 64, 64);
+        getContentPane().add(opponentNextLabels[1]);
+
+        opponentNextLabels[2] = new JLabel("");
+        opponentNextLabels[2].setBounds(562 + 680, 391, 64, 64);
+        getContentPane().add(opponentNextLabels[2]);
     }
+
+    /**
+     * TODO setup opponent ready screen
+     * a semi-transparent screen that asks if the player is ready for the game
+     * don't worry about keyListener
+     * a big font "Waiting for Opponent" at center of the screen
+     * after opponent is ready, change the words to "Opponent is ready"
+     * screen is white semi-transparent
+     * black font Ariel
+     * covers the right half of the screen, so don't worry about the dimension, just (680,0,680,768)
+     */
+    protected void setupOpponentReadyScreen(){}
+
+    /**
+     * TODO setup opponent gameOver screen
+     * a semi-transparent screen that tells the player the information of the opponent after it is over
+     * don't worry about keyListener
+     * a big font "Game Over" at top half of the screen
+     * and a smaller font under that says provides:
+     *          - opponent's score of the game
+     *          - opponent's lines disappeared in the game
+     *          - opponent's levels reached in the game
+     *          - a list of 5 highest scores (an empty table is good)
+     * screen is white semi-transparent
+     * black font Ariel
+     * covers the right half of the screen, so don't worry about the dimension, just (680,0,680,768)
+     */
+    protected void setupOpponentGameOverScreen(){}
 }

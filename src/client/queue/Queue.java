@@ -6,11 +6,11 @@ public class Queue<T> {
 	
 	public void enqueue(T item){
 		if (this.head == null){
-			this.head = new DoublyNode<T> (item, this.tail, null);
+			this.head = new DoublyNode<> (item, this.tail, null);
 		} else if (this.tail == null){
-			this.tail = new DoublyNode<T> (item, null, this.head);
+			this.tail = new DoublyNode<> (item, null, this.head);
 		} else {
-			DoublyNode<T> node = new DoublyNode<T> (item, null, this.tail);
+			DoublyNode<T> node = new DoublyNode<> (item, null, this.tail);
 			this.tail = node;
 		}
 	}
@@ -21,13 +21,13 @@ public class Queue<T> {
 		return item;
 	}
 
-	public void display(){
-		Node<T> tempNode = head;
-		System.out.println(tempNode.getItem());
-
-		while (tempNode.getNext() != null){
-			tempNode = tempNode.getNext();
-			System.out.println(tempNode.getItem());
+    public Object[] peek(int amount){
+		T[] items = (T[])new Object[amount];
+		DoublyNode<T> node = this.head;
+		for (int i = 0; i < amount; i++){
+			items[i] = node.getItem();
+			node = (DoublyNode<T>)node.getNext();
 		}
+		return items;
 	}
 }

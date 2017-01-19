@@ -15,6 +15,11 @@ import java.util.Vector;
 public class WaitLoungeGUI extends JFrame {
 	private JTable table;
 	private JTextField textField;
+
+	public static void main(String[] args) {
+		new WaitLoungeGUI().setVisible(true);
+	}
+
 	public WaitLoungeGUI() {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -156,9 +161,5 @@ public class WaitLoungeGUI extends JFrame {
 	    public boolean shouldSelectCell(EventObject anEvent) {
 	        return false;
 	    }
-	}
-	
-	public static void main(String[] args) {
-		new WaitLoungeGUI().setVisible(true);
 	}
 }

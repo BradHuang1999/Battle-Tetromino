@@ -6,7 +6,9 @@ public class DoublyNode<T> extends Node<T> {
     public DoublyNode(T item, Node<T> next, Node<T> prev) {
         super(item, next);
         this.prev = prev;
-        prev.setNext(this);
+        if (prev != null){
+            prev.setNext(this);
+        }
     }
 
     public Node<T> getPrev() {

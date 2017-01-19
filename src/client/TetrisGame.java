@@ -7,82 +7,131 @@ import javax.swing.*;
 import java.awt.*;
 
 
-abstract class TetrisGame extends JFrame {
-    protected String mode;
+abstract class TetrisGame extends JFrame{
+    protected GameBoard myGameBoard;
 
-    protected boolean playing;
-    protected boolean gameOver = false;
+    protected boolean ready, playing, gameOver;
 
+    protected int myScore = 0, myLines = 0;
     protected int level = 1;
+    protected int tetrominoNum = 0;
 
-    public TetrisGame() {
+    protected JLabel iconLabel, levelLabel;
+    protected JLabel myHoldLabel, myScoreLabel, myLineLabel;
+    protected JLabel[] myNextLabels = new JLabel[3];
+
+    protected Tetromino myCurrentTetromino, myHoldTetromino = null;
+    protected Queue<Tetromino> myTetrominoQueue = new Queue<Tetromino>();
+
+    public TetrisGame(){
         getContentPane().setLayout(null);
+        getContentPane().setBackground(Color.LIGHT_GRAY);
 
-        JLabel lblNewLabel = new JLabel("");
+        iconLabel = new JLabel("");
         ImageIcon img = new ImageIcon("resources/tetronimo.png");
-        lblNewLabel.setIcon(img);
-        lblNewLabel.setBounds(459, 39, 460, 51);
-        getContentPane().add(lblNewLabel);
+        iconLabel.setIcon(img);
+        getContentPane().add(iconLabel);
 
-        JLabel lblLevel = new JLabel("LEVEL " + level);
-        lblLevel.setFont(new Font("Tahoma", Font.BOLD, 16));
-        lblLevel.setBounds(612, 89, 77, 28);
-        getContentPane().add(lblLevel);
+        levelLabel = new JLabel("LEVEL " + level);
+        levelLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+        levelLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(levelLabel);
 
         JLabel lblHold = new JLabel("Hold");
-        lblHold.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblHold.setBounds(42, 208, 100, 22);
+        lblHold.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        lblHold.setBounds(0, 220, 170, 20);
         lblHold.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(lblHold);
 
-        JLabel lblNewLabel_1 = new JLabel("");
+        myHoldLabel = new JLabel("");
         ImageIcon img1 = new ImageIcon("resources/hold.png");
-        lblNewLabel_1.setIcon(img1);
-        lblNewLabel_1.setBounds(60, 241, 64, 64);
-        getContentPane().add(lblNewLabel_1);
+        myHoldLabel.setIcon(img1);
+        myHoldLabel.setBounds(53, 250, 64, 64);
+        getContentPane().add(myHoldLabel);
 
         JLabel lblScore = new JLabel("Score");
         lblScore.setHorizontalAlignment(SwingConstants.CENTER);
-        lblScore.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblScore.setBounds(42, 416, 100, 22);
+        lblScore.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblScore.setBounds(0, 440, 170, 22);
         getContentPane().add(lblScore);
 
-        JTextField textField = new JTextField();
-        textField.setBounds(42, 449, 100, 20);
-        getContentPane().add(textField);
-        textField.setColumns(10);
+        myScoreLabel = new JLabel("0");
+        myScoreLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+        myScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        myScoreLabel.setBounds(0, 470, 170, 22);
+        getContentPane().add(myScoreLabel);
 
         JLabel lblLines = new JLabel("Lines");
         lblLines.setHorizontalAlignment(SwingConstants.CENTER);
-        lblLines.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblLines.setBounds(42, 491, 100, 22);
+        lblLines.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblLines.setBounds(0, 525, 170, 22);
         getContentPane().add(lblLines);
 
-        JTextField textField_1 = new JTextField();
-        textField_1.setColumns(10);
-        textField_1.setBounds(42, 524, 100, 20);
-        getContentPane().add(textField_1);
+        myLineLabel = new JLabel("0");
+        myLineLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
+        myLineLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        myLineLabel.setBounds(0, 555, 170, 22);
+        getContentPane().add(myLineLabel);
 
         JLabel lblNext = new JLabel("Next");
         lblNext.setHorizontalAlignment(SwingConstants.CENTER);
-        lblNext.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNext.setBounds(522, 208, 100, 22);
+        lblNext.setFont(new Font("Tahoma", Font.PLAIN, 18));
+        lblNext.setBounds(509, 208, 170, 22);
         getContentPane().add(lblNext);
 
-        JLabel label_1 = new JLabel("");
-        label_1.setBounds(540, 241, 64, 64);
-        getContentPane().add(label_1);
+        myNextLabels[0] = new JLabel("");
+        myNextLabels[0].setBounds(562, 241, 64, 64);
+        getContentPane().add(myNextLabels[0]);
 
-        JLabel label = new JLabel("");
-        label.setBounds(540, 316, 64, 64);
-        getContentPane().add(label);
+        myNextLabels[1] = new JLabel("");
+        myNextLabels[1].setBounds(562, 316, 64, 64);
+        getContentPane().add(myNextLabels[1]);
 
-        JLabel label_2 = new JLabel("");
-        label_2.setBounds(540, 391, 64, 64);
-        getContentPane().add(label_2);
+        myNextLabels[2] = new JLabel("");
+        myNextLabels[2].setBounds(562, 391, 64, 64);
+        getContentPane().add(myNextLabels[2]);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         setResizable(false);
     }
+
+    /**
+     * TODO setup ready screen
+     * a semi-transparent screen that asks if the player is ready for the game
+     * proceed if the player presses a key
+     * a big font "Ready?" at center of the screen
+     * and a smaller font under that says "press any key to continue"
+     * screen is white semi-transparent
+     * black font Ariel
+     * covers the left half of the screen if double player, so don't worry about the dimension, just (0,0,680,768)
+     */
+    protected void setupMyReadyScreen(){}
+
+    /**
+     * TODO setup gameOver screen
+     * a semi-transparent screen that tells the player the information of the game after it is over
+     * proceed if the player presses a key
+     * a big font "Game Over" at top half of the screen
+     * and a smaller font under that says provides:
+     *          - the score of the game
+     *          - the lines disappeared in the game
+     *          - the levels reached in the game
+     *          - a list of 5 highest scores (an empty table is good)
+     * screen is white semi-transparent
+     * black font Ariel
+     * covers the left half of the screen if double player, so don't worry about the dimension, just (0,0,680,768)
+     */
+    protected void setupMyGameOverScreen(){}
+
+
+    /**
+     * TODO setup countdown screen
+     * a semi-transparent screen that counts down for three seconds before the game
+     * proceed if the player presses a key
+     * a big number at center of the screen
+     * screen is white semi-transparent
+     * black font Ariel
+     * covers THE ENTIRE SCREEN no matter how big it is
+     */
+    protected void setupCountDownScreen(){}
 }

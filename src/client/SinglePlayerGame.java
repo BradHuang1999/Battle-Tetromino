@@ -6,10 +6,6 @@ import client.queue.Queue;
  * Created by bradh on 1/18/2017.
  */
 abstract class SinglePlayerGame extends TetrisGame{
-    protected GameBoard myGameBoard;
-    protected Queue<Tetromino> myTetrominoQueue;
-
-
     public SinglePlayerGame() {
         super();
 
@@ -17,7 +13,10 @@ abstract class SinglePlayerGame extends TetrisGame{
         setLocationRelativeTo(null);
 
         myGameBoard = new GameBoard();
-        myGameBoard.setBounds(152, 131, 360, 598);
+        myGameBoard.setBounds(170, 155, 338, 546);
+
+        iconLabel.setBounds(140, 39, 400, 50);
+        levelLabel.setBounds(280, 100, 120, 36);
 
         getContentPane().add(myGameBoard);
     }
