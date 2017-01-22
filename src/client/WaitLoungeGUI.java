@@ -1,10 +1,9 @@
 package client;
 
-import game.games.AIGame;
-import game.games.HumanVsAIGame;
-import game.games.OnlineBattleGame;
-import game.games.SoloGame;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import game.games.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -19,30 +18,65 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class WaitLoungeGUI extends JFrame {
-	private JTable table;
-	private JTextField textField;
-	private JTextArea textField_1;
+public class WaitLoungeGUI extends JFrame{
+    private JTable table;
+    private JTextField textField;
+    private JTextArea textField_1;
     private JTextPane textPane;
 
-	public WaitLoungeGUI(){
+    private TetrominoClient client;
+    private DefaultTableModel dm;
+
+    public WaitLoungeGUI(TetrominoClient client) throws IOException{
+        this.client = client;
+
         getContentPane().setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         setSize(650, 700);
         setResizable(false);
         setLocationRelativeTo(null);
-        setTitle(LogInGUI.getUsername() + "'s Waiting Lounge");
+        setTitle(client.nickName + "'s Waiting Lounge");
+
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(24, 21, 592, 250);
         getContentPane().add(scrollPane);
 
+        addWindowListener(new WindowListener(){
+            public void windowClosed(WindowEvent e){
+            }
+
+            public void windowOpened(WindowEvent e){
+            }
+
+            public void windowClosing(WindowEvent e){
+                client.close();
+            }
+
+            public void windowIconified(WindowEvent e){
+            }
+
+            public void windowDeiconified(WindowEvent e){
+            }
+
+            public void windowActivated(WindowEvent e){
+            }
+
+            public void windowDeactivated(WindowEvent e){
+            }
+        });
+
         table = new JTable();
 
-        DefaultTableModel dm = new DefaultTableModel(0, 0);
+        dm = new DefaultTableModel(0, 0);
         String header[] = new String[]{"Game Name", "Game Type", "Players", ""};
         dm.setColumnIdentifiers(header);
         table.setModel(dm);
@@ -111,8 +145,9 @@ public class WaitLoungeGUI extends JFrame {
         getContentPane().add(rdbtnOLBattle);
 
         JLabel lblWarning = new JLabel();
-        lblWarning.setBounds(500,376,120,14);
+        lblWarning.setBounds(420, 376, 195, 14);
         lblWarning.setForeground(Color.RED);
+        lblWarning.setHorizontalAlignment(SwingConstants.RIGHT);
         getContentPane().add(lblWarning);
 
         ButtonGroup group = new ButtonGroup();
@@ -123,40 +158,34 @@ public class WaitLoungeGUI extends JFrame {
         group.add(rdbtnBattle);
         group.setSelected(rdbtnNewRadioButton.getModel(), true);
 
-        JButton btnNewButton = new JButton("Game!");
+        JButton btnNewButton = new JButton("Create Room");
         btnNewButton.setBounds(452, 605, 118, 34);
         getContentPane().add(btnNewButton);
         btnNewButton.addActionListener(e -> {
             if (textField.getText().isEmpty()){
-                lblWarning.setText("*Enter a name first!");
-                return;
+                lblWarning.setText("*Enter a name first");
             } else {
-                lblWarning.setText("");
-                Vector<Object> data = new Vector<Object>();
-                data.add(textField.getText());
-                if (rdbtnNewRadioButton.isSelected()){
-                    data.add("Solo");
-                    data.add("1/1");
-                } else if (rdbtnWha.isSelected()){
-                    data.add("Watch AI");
-                    data.add("1/1");
-                    //TODO: Just for test purpose
-                    data.add("Play unclickable");
-                    dm.addRow(data);
-                    return;
-                    //
-                } else if (rdbtnBattle.isSelected()){
-                    data.add("Battle");
-                    data.add("2/2");
-                } else if (rdbtnOLBattle.isSelected()){
-                    data.add("OnlineBattle");
-                    data.add("1/2");
-                } else if (rdbtnHumanVs.isSelected()){
-                    data.add("Human vs AI");
-                    data.add("1/2");
+                for (int i = 0; i < dm.getRowCount(); i++){
+                    if (dm.getValueAt(i, 0).equals(textField.getText())){
+                        lblWarning.setText("*Please enter a different name");
+                        return;
+                    }
                 }
-                data.add("Play");
-                dm.addRow(data);
+                lblWarning.setText("");
+
+                client.output.println("**createRoom\n" + textField.getText());
+                if (rdbtnNewRadioButton.isSelected()){
+                    client.output.println("Solo");
+                } else if (rdbtnWha.isSelected()){
+                    client.output.println("Watch AI");
+                } else if (rdbtnBattle.isSelected()){
+                    client.output.println("Battle");
+                } else if (rdbtnOLBattle.isSelected()){
+                    client.output.println("Online Battle");
+                } else if (rdbtnHumanVs.isSelected()){
+                    client.output.println("Human vs AI");
+                }
+                client.output.flush();
             }
         });
 
@@ -185,109 +214,210 @@ public class WaitLoungeGUI extends JFrame {
             if (!textField_1.getText().isEmpty()){        // if the textField is empty
                 String msg = textField_1.getText();
 
-//                // send the message to server
-//                client.output.println("SendMessage\n" + friend.getUserName() + "\n" + new Date() + "\n" + msg);
-//                client.output.flush();
+                // send the message to server
+                client.output.println("**sendMessage\n" + client.nickName + "\n" + client.iconPath + "\n" + new Date() + "\n" + msg);
+                client.output.flush();
 
                 // append the message to the chat window
-                appendToPane("Me " + new Date(), Color.BLUE);
-                appendToPane(msg, Color.BLACK);
-                appendToPane("", Color.BLACK);
+                try {
+                    appendMyFirstLineToPane(new Date().toString());
+                    appendToPane(msg, Color.BLACK);
+                } catch (IOException e1){
+                    e1.printStackTrace();
+                }
+
                 textField_1.setText("");
             }
         });
+
+        new Thread(this :: getUpdate).start();
     }
-	
-	class CompCellEditorRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
 
-	    private static final long serialVersionUID = 1L;
-	    private String lastSelected = null;
-
-	    @Override
-	    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-	    	
-        	return getComponent(value, row, column);
-	    }
-	    
-	    @Override
-	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-	    	if(isSelected && value != null){
-	    		lastSelected = value.toString();
-	    	}
-	    	return getComponent(value, row, column);
-	    }
-
-		private Component getComponent(Object value, int row, int column) {
-			if(value != null && (value.toString().equals("Play"))){
-				JPanel p = new JPanel();
-				p.setLayout(null);
-        		JButton jButton = new JButton("play");
-        		jButton.setBounds(5, 5, 62, 20);
-        		jButton.addActionListener(e ->{
-        			Object mode = table.getValueAt(row, 1);
-        			switch (mode.toString()){
-                        case "Solo":
-                            new SoloGame().setVisible(true);
+    public void getUpdate(){
+        client.outputOpen = true;
+        String userInput, userInput1, userInput2, userInput3, userInput4;
+        while (client.outputOpen){
+            try {
+                if (client.input.ready()){
+                    userInput = client.input.readLine();
+                    switch (userInput){
+                        case "**message":
+                            userInput1 = client.input.readLine();  // nickname
+                            userInput2 = client.input.readLine();  // icon
+                            userInput3 = client.input.readLine();  // timeStamp
+                            userInput4 = client.input.readLine();  // message
+                            appendFirstLineToPane(userInput2, userInput1, userInput3);
+                            appendToPane(userInput4, Color.BLACK);
                             break;
-                        case "Watch AI":
-                            new AIGame().setVisible(true);
-                            break;
-                        case "Human VS AI":
-                            new HumanVsAIGame().setVisible(true);
-                            break;
-                        case "Battle":
-                            new OnlineBattleGame().setVisible(true);
-                            break;
-					}
-        			lastSelected = "Play";
-        		});
-        		JButton viewButton = new JButton("view");
-        		viewButton.addActionListener(e ->{
-        			lastSelected = "Play";
-        		});
-        		viewButton.setBounds(74, 5, 62, 20);
-        		p.add(jButton);
-        		p.add(viewButton);
-        		return p;
-        	}else if(value != null && value.toString().equals("Play unclickable")){
-        		JPanel p = new JPanel();
-				p.setLayout(null);
-        		JButton jButton = new JButton("play");
-        		jButton.setBounds(5, 5, 62, 20);
-        		jButton.setEnabled(false);
-        		JButton viewButton = new JButton("view");
-        		viewButton.addActionListener(e ->{
-        			lastSelected = "Play";
-        		});
-        		viewButton.setBounds(74, 5, 62, 20);
-        		p.add(jButton);
-        		p.add(viewButton);
-        		lastSelected = "Play unclickable";
-        		return p;
-        	}
-			lastSelected = value == null ? null : value.toString();
-            return (value == null || value.toString() == null) ? null : new JLabel(value.toString());
-		}
-		
-	    @Override
-	    public Object getCellEditorValue() {
-	        return lastSelected;
-	    }
 
-	    @Override
-	    public boolean isCellEditable(EventObject anEvent) {	    	
-	        return ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
-	    }
+                        case "**gameRoom":
+                            boolean identified = false;
 
-	    @Override
-	    public boolean shouldSelectCell(EventObject anEvent) {
-	        return false;
-	    }
-	}
-	
-	public static void main(String[] args) {
-		new WaitLoungeGUI().setVisible(true);
-	}
+                            userInput1 = client.input.readLine();  // gameroom name
+                            userInput2 = client.input.readLine();  // game type
+                            userInput3 = client.input.readLine();  // player count
+                            userInput4 = client.input.readLine();  // max count
+
+                            for (int i = 0; i < table.getRowCount(); i++){
+                                if (userInput1.equals(table.getValueAt(i, 0))){
+                                    identified = true;
+                                    if (userInput2!= table.getValueAt(i, 1)){
+                                        table.setValueAt(userInput2, i, 1);
+                                    }
+                                    if ((userInput3 + "/" + userInput4) != table.getValueAt(i, 2)){
+                                        table.setValueAt((userInput3 + "/" + userInput4), i, 2);
+                                        if (Integer.valueOf(userInput3) >= Integer.valueOf(userInput4)){
+                                            table.setValueAt("Play unclickable", i, 3);
+                                        } else {
+                                            table.setValueAt("Play", i, 3);
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (!identified){
+                                Vector<Object> data = new Vector<Object>();
+                                data.add(userInput1);
+                                data.add(userInput2);
+                                data.add(userInput3 + "/" + userInput4);
+                                if (Integer.valueOf(userInput3) >= Integer.valueOf(userInput4)){
+                                    data.add("Play unclickable");
+                                } else {
+                                    data.add("Play");
+                                }
+                                dm.addRow(data);
+                            }
+                            break;
+
+                        case "**permission to play":
+                            userInput1 = client.input.readLine();  // game name
+                            for (int i = 0; i < dm.getRowCount(); i++){
+                                if (userInput1.equals(dm.getValueAt(i, 0))){
+                                    switch (dm.getValueAt(i, 1).toString()){
+                                        case "Solo":
+                                            client.game = new SoloGame(client.output);
+                                            break;
+                                        case "Watch AI":
+                                            client.game = new AIGame(client.output);
+                                            break;
+                                        case "Human vs AI":
+                                            client.game = new HumanVsAIGame(client.nickName, client.iconPath, client.output);
+                                            break;
+                                        case "Battle":
+                                            client.game = new LocalBattleGame(client.nickName, client.iconPath, client.output);
+                                            break;
+                                        case "Online Battle":
+                                            client.game = new OnlineBattleGame(client.nickName, client.iconPath, client.output);
+                                            break;
+                                    }
+                                    new Thread(() -> client.game.run()).start();
+                                }
+                            }
+                            break;
+                    }
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class CompCellEditorRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor{
+        private String lastSelected = null;
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+            return getComponent(value, row, column);
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
+            if (isSelected && value != null){
+                lastSelected = value.toString();
+            }
+            return getComponent(value, row, column);
+        }
+
+        private Component getComponent(Object value, int row, int column){
+            if (value != null && (value.toString().equals("Play"))){
+                JPanel p = new JPanel();
+                p.setLayout(null);
+
+                JButton jButton = new JButton("play");
+                jButton.setBounds(5, 5, 62, 20);
+                jButton.addActionListener(e -> {
+                    client.output.println("**enterRoomAndPlay\n" + table.getValueAt(row, 0));
+                    client.output.flush();
+                    lastSelected = "Play";
+                });
+                JButton viewButton = new JButton("view");
+                viewButton.addActionListener(e -> {
+                    client.output.println("**enterRoomAndView\n" + table.getValueAt(row, 0));
+                    client.output.flush();
+                    lastSelected = "View";
+                });
+                viewButton.setBounds(74, 5, 62, 20);
+
+                p.add(jButton);
+                p.add(viewButton);
+                return p;
+
+            } else if (value != null && value.toString().equals("Play unclickable")){
+                JPanel p = new JPanel();
+                p.setLayout(null);
+
+                JButton jButton = new JButton("play");
+                jButton.setBounds(5, 5, 62, 20);
+                jButton.setEnabled(false);
+
+                JButton viewButton = new JButton("view");
+                viewButton.addActionListener(e -> {
+                    client.output.println("**enterRoomAndView\n" + table.getValueAt(row, 0));
+                    client.output.flush();
+                    lastSelected = "View";
+                });
+                viewButton.setBounds(74, 5, 62, 20);
+
+                p.add(jButton);
+                p.add(viewButton);
+
+                lastSelected = "Play unclickable";
+                return p;
+            }
+            lastSelected = value.toString();
+            return new JLabel(lastSelected);
+        }
+
+        @Override
+        public Object getCellEditorValue(){
+            return lastSelected;
+        }
+
+        @Override
+        public boolean isCellEditable(EventObject anEvent){
+//            return false;
+            return ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
+        }
+
+        @Override
+        public boolean shouldSelectCell(EventObject anEvent){
+            return true;
+        }
+    }
+
+    private void appendFirstLineToPane(String path, String nickName, String timeStamp) throws IOException{
+        Image img = ImageIO.read(new File(path)).getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
+        appendToPane(textPane, "", Color.BLUE);
+        textPane.insertIcon(new ImageIcon(img));
+        appendToPane(textPane, nickName + " @ " + timeStamp + "\n", new Color(10, 90, 20));
+    }
+
+    private void appendMyFirstLineToPane(String timeStamp) throws IOException{
+        Image img = ImageIO.read(new File(client.iconPath)).getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
+        appendToPane(textPane, "", Color.BLUE);
+        textPane.insertIcon(new ImageIcon(img));
+        appendToPane(textPane, "Me @ " + timeStamp + "\n", Color.BLUE);
+    }
 
     /**
      * append the message to the textArea pane
@@ -295,15 +425,8 @@ public class WaitLoungeGUI extends JFrame {
      * @param msg   message
      * @param color color of the message
      */
-    public void appendToPane(String msg, Color color) {
-        if (msg.length() < 10 || (!msg.substring(0, 10).equals("//emoji//-"))) {
-            msg = msg + "\n";
-            appendToPane(textPane, msg, color);
-        } else {
-            appendToPane(textPane, " ", color);
-            textPane.insertIcon(new ImageIcon(msg.substring(10)));
-            appendToPane(textPane, "\n", color);
-        }
+    private void appendToPane(String msg, Color color){
+        appendToPane(textPane, "   " + msg + "\n\n", color);
     }
 
     /**
@@ -313,12 +436,12 @@ public class WaitLoungeGUI extends JFrame {
      * @param msg message to append
      * @param c   color of message
      */
-    private void appendToPane(JTextPane tp, String msg, Color c) {
+    private void appendToPane(JTextPane tp, String msg, Color c){
         StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
 
         int len = tp.getDocument().getLength();
         tp.setCaretPosition(len);

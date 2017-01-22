@@ -4,6 +4,7 @@ import game.Tetromino;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 
 import static java.awt.event.KeyEvent.VK_P;
 
@@ -11,8 +12,8 @@ import static java.awt.event.KeyEvent.VK_P;
  * Created by bradh on 1/18/2017.
  */
 abstract class SinglePlayerGame extends TetrisGame{
-    public SinglePlayerGame(){
-        super();
+    public SinglePlayerGame(PrintWriter output){
+        super(output);
 
         setSize(680, 768);
         setLocationRelativeTo(null);
@@ -45,7 +46,7 @@ abstract class SinglePlayerGame extends TetrisGame{
         });
     }
 
-    protected void run(){
+    public void run(){
         new Thread(this :: myGameGo).start();
         new Thread(this :: checkMyHold).start();
     }
@@ -90,6 +91,7 @@ abstract class SinglePlayerGame extends TetrisGame{
                         try {
                             Thread.sleep(40);
                         } catch (InterruptedException e){
+                            e.printStackTrace();
                         }
 
                         if (myGameBoard.gameOver()){
@@ -131,6 +133,7 @@ abstract class SinglePlayerGame extends TetrisGame{
                             try {
                                 Thread.sleep(100);
                             } catch (InterruptedException e){
+                                e.printStackTrace();
                             }
                         }
                         repaint();
@@ -164,6 +167,7 @@ abstract class SinglePlayerGame extends TetrisGame{
 //                        Thread.sleep(60);
                     Thread.sleep(level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
 
@@ -171,6 +175,7 @@ abstract class SinglePlayerGame extends TetrisGame{
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
         }

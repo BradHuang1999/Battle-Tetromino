@@ -4,6 +4,7 @@ import game.gameboards.GameBoard;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -11,12 +12,8 @@ import static java.awt.event.KeyEvent.*;
  * Created by bradh on 1/18/2017.
  */
 public class SoloGame extends SinglePlayerGame{
-    public static void main(String[] args) {
-        new SoloGame().run();
-    }
-
-    public SoloGame() {
-        super();
+    public SoloGame(PrintWriter output) {
+        super(output);
 
         myGameBoard = new GameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);

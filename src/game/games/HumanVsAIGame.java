@@ -5,8 +5,10 @@ import game.TransparentPanel;
 import game.gameboards.AIDoublePlayerGameBoard;
 import game.gameboards.DoublePlayerGameBoard;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -14,12 +16,9 @@ import static java.awt.event.KeyEvent.*;
  * Created by bradh on 1/18/2017.
  */
 public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
-    public static void main(String[] args){
-        new HumanVsAIGame().run();
-    }
 
-    public HumanVsAIGame(){
-        super();
+    public HumanVsAIGame(String nickName, String iconPath, PrintWriter output){
+        super(nickName, iconPath, output);
 
         myGameBoard = new DoublePlayerGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);
@@ -28,6 +27,9 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
         opponentGameBoard = new AIDoublePlayerGameBoard();
         opponentGameBoard.setBounds(170 + 680, 155, 338, 546);
         getContentPane().add(opponentGameBoard);
+
+        opponentIcon.setText("AI");
+        opponentIcon.setIcon(new ImageIcon("resources/robot.png"));
 
         addKeyListener(new KeyListener(){
             @Override
@@ -163,7 +165,7 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
 
         TransparentPanel waiting = new TransparentPanel();
         waiting.setBounds(0, 0, 680, 768);
-        waiting.gameOver(message, myScore, myLines, level, false,
+        waiting.gameOver(message, myScore, myLines, level, true,
                 new String[][]{
                         {"aaa", "5000"},
                         {"bbb", "4000"},
@@ -172,8 +174,29 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
                         {"eee", "1000"}});
         getLayeredPane().add(waiting, 30);
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        waiting.requestFocus();
+        waiting.addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent e){
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e){
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e){
+                dispose();
+            }
+        });
+
         while (true){
-            try{
+            try {
                 Thread.sleep(100);
             } catch (InterruptedException e){
                 e.printStackTrace();
@@ -187,7 +210,7 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
 
         TransparentPanel waiting = new TransparentPanel();
         waiting.setBounds(680, 0, 680, 768);
-        waiting.gameOver(message, opponentScore, opponentLines, level, false,
+        waiting.gameOver(message, opponentScore, opponentLines, level, gameOver,
                 new String[][]{
                         {"aaa", "5000"},
                         {"bbb", "4000"},
@@ -195,6 +218,29 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
                         {"ddd", "2000"},
                         {"eee", "1000"}});
         getLayeredPane().add(waiting, 30);
+
+        if (gameOver){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            waiting.requestFocus();
+            waiting.addKeyListener(new KeyListener(){
+                @Override
+                public void keyTyped(KeyEvent e){
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e){
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e){
+                    dispose();
+                }
+            });
+        }
 
         while (true){
             try{

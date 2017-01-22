@@ -3,8 +3,10 @@ package game.games;
 import game.TransparentPanel;
 import game.gameboards.DoublePlayerGameBoard;
 
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -12,12 +14,8 @@ import static java.awt.event.KeyEvent.*;
  * Created by Brad Huang on 1/20/2017.
  */
 public class LocalBattleGame extends DoublePlayerGame{
-    public static void main(String[] args){
-        new LocalBattleGame().run();
-    }
-
-    public LocalBattleGame(){
-        super();
+    public LocalBattleGame(String nickName, String iconPath, PrintWriter output){
+        super(nickName, iconPath, output);
 
         myGameBoard = new DoublePlayerGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);
@@ -26,6 +24,9 @@ public class LocalBattleGame extends DoublePlayerGame{
         opponentGameBoard = new DoublePlayerGameBoard();
         opponentGameBoard.setBounds(170 + 680, 155, 338, 546);
         getContentPane().add(opponentGameBoard);
+
+        opponentIcon.setText(nickName);
+        opponentIcon.setIcon(new ImageIcon(iconPath));
 
         this.addKeyListener(new KeyListener(){
             @Override

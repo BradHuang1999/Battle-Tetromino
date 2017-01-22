@@ -7,6 +7,7 @@ import game.gameboards.GameBoard;
 import game.queue.*;
 import javax.swing.*;
 import java.awt.*;
+import java.io.PrintWriter;
 
 /**
  * Created by bradh on 1/18/2017.
@@ -21,28 +22,27 @@ abstract class DoublePlayerGame extends TetrisGame{
 
     protected int opponentScore = 0, opponentLines = 0, tetrominoEnqueued = 0;
 
-    protected JLabel opponentHoldLabel, opponentScoreLabel, opponentLineLabel;
+    protected JLabel opponentHoldLabel, opponentScoreLabel, opponentLineLabel, opponentIcon;
     protected JLabel[] opponentNextLabels = new JLabel[3];
 
     protected boolean iWonLevel;
 
-    public DoublePlayerGame(){
-        super();
+    public DoublePlayerGame(String nickName, String iconPath, PrintWriter output){
+        super(output);
 
         setSize(1360, 768);
         setLocationRelativeTo(null);
 
-        JLabel myIcon = new JLabel("xxxxxx");
+        JLabel myIcon = new JLabel(nickName);
         myIcon.setFont(new Font("Segoe UI", Font.BOLD, 20));
         myIcon.setBounds(180, 80, 300, 64);
-        myIcon.setIcon(new ImageIcon("resources/emojiDevil.png"));
+        myIcon.setIcon(new ImageIcon(iconPath));
         myIcon.setHorizontalAlignment(SwingConstants.LEFT);
         getContentPane().add(myIcon);
 
-        JLabel opponentIcon = new JLabel("xxxxxx");
+        opponentIcon = new JLabel();
         opponentIcon.setFont(new Font("Segoe UI", Font.BOLD, 20));
         opponentIcon.setBounds(1360 - 180 - 300, 80, 300, 64);
-        opponentIcon.setIcon(new ImageIcon("resources/emojiSmirk.png"));
         opponentIcon.setHorizontalAlignment(SwingConstants.RIGHT);
         getContentPane().add(opponentIcon);
 
@@ -51,7 +51,7 @@ abstract class DoublePlayerGame extends TetrisGame{
 
         JLabel lblHold = new JLabel("Hold");
         lblHold.setFont(new Font("Tahoma", Font.PLAIN, 20));
-        lblHold.setBounds(0 + 680, 220, 170, 20);
+        lblHold.setBounds(680, 220, 170, 20);
         lblHold.setHorizontalAlignment(SwingConstants.CENTER);
         getContentPane().add(lblHold);
 
@@ -64,25 +64,25 @@ abstract class DoublePlayerGame extends TetrisGame{
         JLabel lblScore = new JLabel("Score");
         lblScore.setHorizontalAlignment(SwingConstants.CENTER);
         lblScore.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblScore.setBounds(0 + 680, 440, 170, 22);
+        lblScore.setBounds(680, 440, 170, 22);
         getContentPane().add(lblScore);
 
         opponentScoreLabel = new JLabel("0");
         opponentScoreLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
         opponentScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        opponentScoreLabel.setBounds(0 + 680, 470, 170, 22);
+        opponentScoreLabel.setBounds(680, 470, 170, 22);
         getContentPane().add(opponentScoreLabel);
 
         JLabel lblLines = new JLabel("Lines");
         lblLines.setHorizontalAlignment(SwingConstants.CENTER);
         lblLines.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        lblLines.setBounds(0 + 680, 525, 170, 22);
+        lblLines.setBounds(680, 525, 170, 22);
         getContentPane().add(lblLines);
 
         opponentLineLabel = new JLabel("0");
         opponentLineLabel.setFont(new Font("Tahoma", Font.BOLD, 18));
         opponentLineLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        opponentLineLabel.setBounds(0 + 680, 555, 170, 22);
+        opponentLineLabel.setBounds(680, 555, 170, 22);
         getContentPane().add(opponentLineLabel);
 
         JLabel lblNext = new JLabel("Next");
@@ -104,7 +104,7 @@ abstract class DoublePlayerGame extends TetrisGame{
         getContentPane().add(opponentNextLabels[2]);
     }
 
-    protected void run(){
+    public void run(){
         setVisible(true);
 
         opponentReady = false;
@@ -200,6 +200,7 @@ abstract class DoublePlayerGame extends TetrisGame{
                             try {
                                 Thread.sleep(100);
                             } catch (InterruptedException e){
+                                e.printStackTrace();
                             }
                         }
                         repaint();
@@ -209,6 +210,7 @@ abstract class DoublePlayerGame extends TetrisGame{
 
                     Thread.sleep(level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
 
@@ -216,6 +218,7 @@ abstract class DoublePlayerGame extends TetrisGame{
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -243,6 +246,7 @@ abstract class DoublePlayerGame extends TetrisGame{
                         try {
                             Thread.sleep(40);
                         } catch (InterruptedException e){
+                            e.printStackTrace();
                         }
 
                         if (opponentGameBoard.gameOver()){
@@ -274,6 +278,7 @@ abstract class DoublePlayerGame extends TetrisGame{
                             try {
                                 Thread.sleep(100);
                             } catch (InterruptedException e){
+                                e.printStackTrace();
                             }
                         }
                         repaint();
@@ -283,6 +288,7 @@ abstract class DoublePlayerGame extends TetrisGame{
 
                     Thread.sleep(level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
 
@@ -290,6 +296,7 @@ abstract class DoublePlayerGame extends TetrisGame{
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e){
+                    e.printStackTrace();
                 }
             }
         }
@@ -348,6 +355,7 @@ abstract class DoublePlayerGame extends TetrisGame{
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e){
+                e.printStackTrace();
             }
             if (opponentGameBoard.getHoldSwitch()){
                 if (opponentHoldTetromino == null){

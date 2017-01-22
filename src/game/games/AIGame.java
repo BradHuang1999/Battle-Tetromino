@@ -3,17 +3,15 @@ package game.games;
 import game.Tetromino;
 import game.gameboards.AIGameBoard;
 
+import java.io.PrintWriter;
+
 /**
  * Created by bradh on 1/18/2017.
  */
 public class AIGame extends SinglePlayerGame implements AutoPlayable{
 
-    public static void main(String[] args){
-        new AIGame().run();
-    }
-
-    public AIGame(){
-        super();
+    public AIGame(PrintWriter output){
+        super(output);
 
         myGameBoard = new AIGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);

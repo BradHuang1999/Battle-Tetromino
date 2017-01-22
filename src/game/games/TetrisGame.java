@@ -10,9 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.PrintWriter;
 
 
-abstract class TetrisGame extends JFrame{
+public abstract class TetrisGame extends JFrame{
     protected GameBoard myGameBoard;
 
     protected boolean ready, playing, gameOver;
@@ -30,7 +31,11 @@ abstract class TetrisGame extends JFrame{
 
     protected TransparentPanel pauseScreen;
 
-    public TetrisGame(){
+    protected PrintWriter output;
+
+    public TetrisGame(PrintWriter output){
+        this.output = output;
+
         getContentPane().setLayout(null);
         getContentPane().setBackground(Color.LIGHT_GRAY);
 
@@ -98,9 +103,11 @@ abstract class TetrisGame extends JFrame{
         myNextLabels[2].setBounds(562, 391, 64, 64);
         getContentPane().add(myNextLabels[2]);
 
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(true);
     }
+
+    public abstract void run();
 
     abstract void myGameGo();
 
@@ -193,13 +200,13 @@ abstract class TetrisGame extends JFrame{
 
             @Override
             public void keyReleased(KeyEvent e){
-                System.exit(0);
+                dispose();
             }
         });
 
         while (true){
             try{
-                Thread.sleep(1);
+                Thread.sleep(100);
             } catch (InterruptedException e){
                 e.printStackTrace();
             }
@@ -227,6 +234,7 @@ abstract class TetrisGame extends JFrame{
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e){
+                e.printStackTrace();
             }
             if (myGameBoard.getHoldSwitch()){
                 if (myHoldTetromino == null){

@@ -5,28 +5,50 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.swing.*;
 
 public class LogInGUI extends JFrame{
     private static JTextField usernameField;
 	private JTextField ipField, portField;
-    public static Icon selectedPic;
 
-    public static void main(String[] args){
-        new LogInGUI().setVisible(true);
-    }
-    public static String getUsername(){
-    	return usernameField == null ? "" : usernameField.getText();
-    }
-
-    public LogInGUI(){
+    public LogInGUI(TetrominoClient client){
         setSize(500, 300);
         setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setTitle("Battle Tetromino Login");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        addWindowListener(new WindowListener() {
+            public void windowClosed(WindowEvent e) {
+            }
+
+            public void windowOpened(WindowEvent e) {
+            }
+
+            public void windowClosing(WindowEvent e) {
+                client.close();
+            }
+
+            public void windowIconified(WindowEvent e) {
+            }
+
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            public void windowActivated(WindowEvent e) {
+            }
+
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
 
         ImageIcon img1 = new ImageIcon("resources/tetronimo.png");
         JLabel lblNewLabel = new JLabel("");
@@ -46,14 +68,6 @@ public class LogInGUI extends JFrame{
         lblPort.setBounds(335, 178, 41, 14);
         getContentPane().add(lblPort);
 
-        JButton btnNewButton = new JButton("Login");
-        btnNewButton.setBounds(185, 218, 126, 34);
-        btnNewButton.addActionListener(e -> {
-            dispose();
-            new WaitLoungeGUI().setVisible(true);
-        });
-        getContentPane().add(btnNewButton);
-
         usernameField = new JTextField();
         usernameField.setBounds(180, 140, 200, 24);
         getContentPane().add(usernameField);
@@ -71,62 +85,85 @@ public class LogInGUI extends JFrame{
         portField.setText("1234");
         getContentPane().add(portField);
 
-        JLabel lblCooseAPic = new JLabel("Coose a pic :");
-        lblCooseAPic.setBounds(78, 95, 109, 14);
-        getContentPane().add(lblCooseAPic);
+        JLabel lblChooseAPic = new JLabel("Choose a pic :");
+        lblChooseAPic.setBounds(78, 95, 109, 14);
+        getContentPane().add(lblChooseAPic);
 
-        ActionListener imgButtonAC = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {            	
-            	for(Component comp : getContentPane().getComponents()){
-            		if(comp.getClass().toString().equals(JButton.class.toString())){
-            			((JButton)comp).setBackground(new JButton().getBackground());
-            		}
-            	}
-            	JButton bt =  (JButton) e.getSource();            	
-            	bt.setBackground(Color.BLACK);
-            	selectedPic = ((ImageIcon)bt.getIcon());
+        ImageIcon[] imageIcons = new ImageIcon[5];
+        Image[] scaledImgs = new Image[5];
+        JButton[] btnImgs = new JButton[5];
+        String[] iconSources = {"resources/emojiDevil.png", "resources/emojiFun.png", "resources/emojiHaha.png", "resources/emojiLaugh.png", "resources/emojiSmirk.png"};
+
+        ActionListener imgButtonAC = e -> {
+            for(Component comp : getContentPane().getComponents()){
+                if(comp.getClass().toString().equals(JButton.class.toString())){
+                    comp.setBackground(new JButton().getBackground());
+                }
             }
+            JButton bt = (JButton) e.getSource();
+            bt.setBackground(Color.BLACK);
+            client.iconPath = iconSources[(bt.getBounds().x - 197) / 42];
         };
 
-        ImageIcon img2 = new ImageIcon("resources/emojiDevil.png");
-        Image scaledImg2 = img2.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JButton btnImg2 = new JButton("");
-        btnImg2.setIcon(new ImageIcon(scaledImg2));
-        btnImg2.setBounds(197, 90, 32, 32);
-        btnImg2.addActionListener(imgButtonAC);
-        getContentPane().add(btnImg2);
+        for (int i = 0; i < 5; i++){
+            imageIcons[i] = new ImageIcon(iconSources[i]);
+            scaledImgs[i] = imageIcons[i].getImage().getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
+            btnImgs[i] = new JButton("");
+            btnImgs[i].setIcon(new ImageIcon(scaledImgs[i]));
+            btnImgs[i].setBounds(197 + 42 * i, 90, 32, 32);
+            btnImgs[i].addActionListener(imgButtonAC);
+            getContentPane().add(btnImgs[i]);
+        }
 
-        ImageIcon img3 = new ImageIcon("resources/emojiFun.png");
-        Image scaledImg3 = img3.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JButton btnImg3 = new JButton("");
-        btnImg3.setIcon(new ImageIcon(scaledImg3));
-        btnImg3.setBounds(239, 90, 32, 32);
-        btnImg3.addActionListener(imgButtonAC);
-        getContentPane().add(btnImg3);
-        
-        ImageIcon img4 = new ImageIcon("resources/emojiHaha.png");
-        Image scaledImg4 = img4.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JButton btnImg4 = new JButton("");
-        btnImg4.setIcon(new ImageIcon(scaledImg4));
-        btnImg4.setBounds(281, 90, 32, 32);
-        btnImg4.addActionListener(imgButtonAC);
-        getContentPane().add(btnImg4);
+        JLabel lblWarning = new JLabel();
+        lblWarning.setBounds(0,205,500,14);
+        lblWarning.setForeground(Color.RED);
+        lblWarning.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(lblWarning);
 
-        ImageIcon img5 = new ImageIcon("resources/emojiLaugh.png");
-        Image scaledImg5 = img5.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JButton btnImg5 = new JButton("");
-        btnImg5.setIcon(new ImageIcon(scaledImg5));
-        btnImg5.setBounds(323, 90, 32, 32);
-        btnImg5.addActionListener(imgButtonAC);
-        getContentPane().add(btnImg5);
+        JButton btnNewButton = new JButton("Login");
+        btnNewButton.setBounds(200, 230, 100, 24);
+        btnNewButton.addActionListener(e -> {
+            if (usernameField.getText().equals("")){
+                lblWarning.setText("*Please enter username");
+            } else if (client.iconPath == null){
+                lblWarning.setText("*Please choose a picture");
+            } else {
+                try {
+                    // attempt to make a connection
+                    System.out.println("Attempting to make a connection..");
 
-        ImageIcon img6 = new ImageIcon("resources/emojiSmirk.png");
-        Image scaledImg6 = img6.getImage().getScaledInstance(32, 32, java.awt.Image.SCALE_SMOOTH);
-        JButton btnImg6 = new JButton("");
-        btnImg6.setIcon(new ImageIcon(scaledImg6));
-        btnImg6.setBounds(365, 90, 32, 32);
-        btnImg6.addActionListener(imgButtonAC);
-        getContentPane().add(btnImg6);
+                    client.nickName = usernameField.getText();
+
+                    client.socket = new Socket(ipField.getText(), Integer.valueOf(portField.getText()));  // attempt socket connection (local address). This will wait until a connection is made
+
+                    InputStreamReader stream1 = new InputStreamReader(client.socket.getInputStream()); // stream for network input
+                    client.input = new ClientBufferedReader(stream1);
+                    client.output = new PrintWriter(client.socket.getOutputStream()); // assign printwriter to network stream
+
+                    client.output.println("**login\n" + usernameField.getText() + "\n" + client.iconPath);
+                    client.output.flush();
+
+                    client.outputOpen = true;
+                    while(client.outputOpen){
+                        if (client.input.ready()){
+                            if (client.input.readLine().equals("**successful")){
+                                client.outputOpen = false;
+                            }
+                        }
+                    }
+
+                    System.out.println("Connection made.");
+                    dispose();
+
+                    new WaitLoungeGUI(client).setVisible(true);
+                } catch (IOException ex){
+                    // connection error occuring
+                    System.out.println("Connection to Server Failed");
+                    System.exit(-1);
+                }
+            }
+        });
+        getContentPane().add(btnNewButton);
     }
 }

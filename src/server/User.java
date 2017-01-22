@@ -5,132 +5,52 @@ import java.util.ArrayList;
 
 // User class
 class User {
-	// User Variables
-	public ArrayList<String> messages = new ArrayList<String>();
-    public ArrayList<String> messageSenders = new ArrayList<String>();
-	public ArrayList<String> messageSendersNick = new ArrayList<String>();
-	public ArrayList<String> messageTime = new ArrayList<String>();
+	private String nickName;
+    private String userIconPic;
 
-    public String sendMessage;
+    private ArrayList<String> newMessagesNick = new ArrayList<String>();
+    private ArrayList<String> newMessagesIcon = new ArrayList<String>();
+    private ArrayList<String> newMessagesTime = new ArrayList<String>();
 
-	private String username;
-	private String password;
-	private String nickname;
-	private String signature;
-
-	private Socket socket;
-	private String messagingUser;
-	private String status;
+    private ArrayList<String> newMessages = new ArrayList<String>();
+	protected Socket socket;
 
 	// Constructors
-	User(){
-		this.status = "Offline";
-	}
-
 	User(Socket s){
-		// Online status by default
-		this.status = "Online";
-		this.signature = "Status Message Here";
 		// Setting socket
 		this.socket = s;
 	}
 
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
-	}
+    public String nickName(){
+        return nickName;
+    }
 
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void nickName(String nickName){
+        this.nickName = nickName;
+    }
 
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
+    public String getUserIconPic(){
+        return userIconPic;
+    }
 
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setUserIconPic(String userIconPic){
+        this.userIconPic = userIconPic;
+    }
 
-	/**
-	 * @return the messageOfDay
-	 */
-	public String getSignature() {
-		return signature;
-	}
+    public ArrayList<String> getNewMessages(){
+        return newMessages;
+    }
 
-	/**
-	 * @param messageOfDay the messageOfDay to set
-	 */
-	public void setSignature(String messageOfDay) {
-		this.signature = messageOfDay;
-	}
+    public ArrayList<String> getNewMessagesNick(){
+        return newMessagesNick;
+    }
 
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-		return status;
-	}
+    public ArrayList<String> getNewMessagesIcon(){
+        return newMessagesIcon;
+    }
 
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-		this.status = status;
-	}
+    public ArrayList<String> getNewMessagesTime(){
+        return newMessagesTime;
+    }
 
-	/**
-	 * @return the socket
-	 */
-	public Socket getSocket() {
-		return socket;
-	}
-
-	/**
-	 * @param socket the socket to set
-	 */
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
-	/**
-	 * @return the messagingUser
-	 */
-	public String getMessagingUser() {
-		return messagingUser;
-	}
-
-	/**
-	 * @param messagingUser the messagingUser to set
-	 */
-	public void setMessagingUser(String messagingUser) {
-		this.messagingUser = messagingUser;
-	}
-
-	/**
-	 * @return the nickname
-	 */
-	public String getNickname() {
-		return nickname;
-	}
-
-	/**
-	 * @param nickname the nickname to set
-	 */
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
-	
 }

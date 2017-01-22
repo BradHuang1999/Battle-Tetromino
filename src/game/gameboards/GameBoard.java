@@ -296,7 +296,7 @@ public class GameBoard extends JPanel{
 
     public boolean gameOver(){
         for (int i = 1; i < 13; i++){
-            if (this.map[i][21]){
+            if (this.map[i][21] && !this.movable[i][21]){
                 return true;
             }
         }
