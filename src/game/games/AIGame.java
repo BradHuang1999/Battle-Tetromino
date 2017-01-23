@@ -37,7 +37,7 @@ public class AIGame extends SinglePlayerGame implements AutoPlayable{
             }
 
             if (((AIGameBoard)myGameBoard).hasUnhandledTetromino){
-                ((AIGameBoard)myGameBoard).moveToBestPosition(this.level, this.myHoldTetromino != null ? this.myHoldTetromino : (Tetromino)this.myTetrominoQueue.peek(1)[0]);
+                ((AIGameBoard)myGameBoard).moveToBestPosition(this.myHoldTetromino != null ? this.myHoldTetromino : (Tetromino)this.myTetrominoQueue.peek(1)[0]);
             }
         }
     }

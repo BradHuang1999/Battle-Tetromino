@@ -1,6 +1,5 @@
 package client;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import game.Tetromino;
 import game.games.*;
 
@@ -21,12 +20,15 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+/**
+ * @author Brad Huang
+ * @date Jan 19, 2017
+ */
 public class WaitLoungeGUI extends JFrame{
     private JTable table;
     private JTextField textField;
@@ -36,9 +38,16 @@ public class WaitLoungeGUI extends JFrame{
     private TetrominoClient client;
     private DefaultTableModel dm;
 
+    /**
+     * create wait GUI
+     *
+     * @param client the client for I/O use
+     * @throws IOException
+     */
     public WaitLoungeGUI(TetrominoClient client) throws IOException{
         this.client = client;
 
+        // GUI stuff
         getContentPane().setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -174,7 +183,7 @@ public class WaitLoungeGUI extends JFrame{
                 }
                 lblWarning.setText("");
 
-                client.output.println("**createRoom\n" + textField.getText());
+                client.output.println("**createRoom\n" + textField.getText());      // send messages to server
                 if (rdbtnNewRadioButton.isSelected()){
                     client.output.println("Solo");
                 } else if (rdbtnWha.isSelected()){
@@ -212,7 +221,7 @@ public class WaitLoungeGUI extends JFrame{
         btnSend.setBounds(302, 578, 70, 70);
         getContentPane().add(btnSend);
         btnSend.addActionListener(e -> {
-            if (!textField_1.getText().isEmpty()){        // if the textField is empty
+            if (!textField_1.getText().isEmpty()){
                 String msg = textField_1.getText();
 
                 // send the message to server
@@ -234,6 +243,9 @@ public class WaitLoungeGUI extends JFrame{
         new Thread(this :: getUpdate).start();
     }
 
+    /**
+     * get updates from server and handle them
+     */
     public void getUpdate(){
         client.outputOpen = true;
         String userInput, userInput1, userInput2, userInput3, userInput4;
@@ -262,7 +274,7 @@ public class WaitLoungeGUI extends JFrame{
                             for (int i = 0; i < table.getRowCount(); i++){
                                 if (userInput1.equals(table.getValueAt(i, 0))){
                                     identified = true;
-                                    if (userInput2!= table.getValueAt(i, 1)){
+                                    if (userInput2 != table.getValueAt(i, 1)){
                                         table.setValueAt(userInput2, i, 1);
                                     }
                                     if ((userInput3 + "/" + userInput4) != table.getValueAt(i, 2)){
@@ -347,23 +359,54 @@ public class WaitLoungeGUI extends JFrame{
         }
     }
 
+    /**
+     * combine cell editor and renderer for display use
+     */
     class CompCellEditorRenderer extends AbstractCellEditor implements TableCellRenderer, TableCellEditor{
         private String lastSelected = null;
 
+        /**
+         * render cells
+         *
+         * @param table
+         * @param value
+         * @param isSelected
+         * @param hasFocus
+         * @param row
+         * @param column
+         * @return a component to render
+         */
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
-            return getComponent(value, row, column);
+            return getComponent(value, row);
         }
 
+        /**
+         * edit cells
+         *
+         * @param table
+         * @param value
+         * @param isSelected
+         * @param row
+         * @param column
+         * @return
+         */
         @Override
         public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column){
             if (isSelected && value != null){
                 lastSelected = value.toString();
             }
-            return getComponent(value, row, column);
+            return getComponent(value, row);
         }
 
-        private Component getComponent(Object value, int row, int column){
+        /**
+         * generate component
+         *
+         * @param value
+         * @param row
+         * @return
+         */
+        private Component getComponent(Object value, int row){
             if (value != null && (value.toString().equals("Play"))){
                 JPanel p = new JPanel();
                 p.setLayout(null);
@@ -396,22 +439,36 @@ public class WaitLoungeGUI extends JFrame{
             return new JLabel(lastSelected);
         }
 
+        /**
+         * get cell editor value
+         *
+         * @return the valur selected to put back
+         */
         @Override
         public Object getCellEditorValue(){
             return lastSelected;
         }
 
+        /**
+         * to prevent cell changing
+         *
+         * @param anEvent
+         * @return if cell can be clicked and changed
+         */
         @Override
         public boolean isCellEditable(EventObject anEvent){
-            return client.game == null && ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
-        }
-
-        @Override
-        public boolean shouldSelectCell(EventObject anEvent){
-            return true;
+            return ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
         }
     }
 
+    /**
+     * append first line of the message to the textpang
+     *
+     * @param path      file path to the icon of the user, must start with "rescource/"
+     * @param nickName  nickname of the use
+     * @param timeStamp timestamp
+     * @throws IOException
+     */
     private void appendFirstLineToPane(String path, String nickName, String timeStamp) throws IOException{
         Image img = ImageIO.read(new File(path)).getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
         appendToPane(textPane, "", Color.BLUE);
@@ -419,6 +476,12 @@ public class WaitLoungeGUI extends JFrame{
         appendToPane(textPane, nickName + " @ " + timeStamp + "\n", new Color(10, 90, 20));
     }
 
+    /**
+     * append line sent by the user
+     *
+     * @param timeStamp timestamp of user
+     * @throws IOException
+     */
     private void appendMyFirstLineToPane(String timeStamp) throws IOException{
         Image img = ImageIO.read(new File(client.iconPath)).getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
         appendToPane(textPane, "", Color.BLUE);

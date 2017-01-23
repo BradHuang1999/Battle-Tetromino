@@ -3,7 +3,8 @@ package game.gameboards;
 import game.Tetromino;
 
 /**
- * Created by Brad Huang on 1/18/2017.
+ * @author Brad Huang
+ * @date Jan 18, 2016
  */
 public class AIGameBoard extends GameBoard{
     public boolean hasUnhandledTetromino = false;
@@ -16,84 +17,35 @@ public class AIGameBoard extends GameBoard{
             - [2] is the spikiness of such arrangement, 99999 if arrangement not possible
          */
 
-    public void moveToBestPosition(int level, Tetromino hold) {
+    /**
+     * move the movables to the best location
+     * @param hold hold piece
+     */
+    public void moveToBestPosition(Tetromino hold) {
         hasUnhandledTetromino = false;
-
-        long time0, time1;
-        time0 = System.nanoTime();
-
-        int YCoordinate = getHeight(this.map, 1, 13);
-        int timeRamaining = (level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150) * (YCoordinate > 19 ? 1 : (20 - YCoordinate));
 
         int xToMove, numToFlip;
         int[] currentBestPosition, holdBestPosition;
 
+        // calculate best positions
         currentBestPosition = findCurrentTetrominoBestPosition(this.current);
         holdBestPosition = findCurrentTetrominoBestPosition(hold);
 
-//        System.out.println("current: x = " + currentBestPosition[0] + " \ty = " + currentBestPosition[1] + " \tposition = " + currentBestPosition[2] + " \tspikiness = " + currentBestPosition[3]);
-//        System.out.println("   hold: x = " + holdBestPosition[0] + " \ty = " + holdBestPosition[1] + " \tposition = " + holdBestPosition[2] + " \tspikiness = " + holdBestPosition[3]);
-//        boolean[][] bestPPP;
-
         if (holdBestPosition[3] < currentBestPosition[3]) {
-            // TODO if fast then sleep
             holdSwitch = true;
-
             xToMove = holdBestPosition[0] - this.piecePositionX;
             numToFlip = holdBestPosition[2] >= this.current.getPhase() ? holdBestPosition[2] - this.current.getPhase() : 4 + holdBestPosition[2] - this.current.getPhase();
-
-//            ////////////////////TEST
-//            System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-//            bestPPP = getMapWithTetromino(hold, holdBestPosition[2], holdBestPosition[0]);
-//            for (int b = 20; b > 0; b--) {
-//                for (int a = 1; a < 13; a++) {
-//                    if (bestPPP[a][b]) {
-//                        System.out.print(1);
-//                    } else {
-//                        System.out.print(0);
-//                    }
-//                }
-//                System.out.println();
-//            }
-//            System.out.println(
-//                    " \taggHeight = " + getAggHeight(bestPPP) +
-//                            " \tcompleteLines = " + getCompleteLines(bestPPP) +
-//                            " \tholeNum = " + getHoleNum(bestPPP) +
-//                            " \tbumpiness = " + getBumpiness(bestPPP) +
-//                            " \tspikiness = " + getSpikiness(bestPPP));
 
         } else {
             xToMove = currentBestPosition[0] - this.piecePositionX;
             numToFlip = currentBestPosition[2] >= this.current.getPhase() ? currentBestPosition[2] - this.current.getPhase() : 4 + currentBestPosition[2] - this.current.getPhase();
-
-//            ////////////////////TEST
-//            System.out.println("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-//            bestPPP = getMapWithTetromino(this.current, currentBestPosition[2], currentBestPosition[0]);
-//            for (int b = 20; b > 0; b--) {
-//                for (int a = 1; a < 13; a++) {
-//                    if (bestPPP[a][b]) {
-//                        System.out.print(1);
-//                    } else {
-//                        System.out.print(0);
-//                    }
-//                }
-//                System.out.println();
-//            }
-//            System.out.println(
-//                    " \taggHeight = " + getAggHeight(bestPPP) +
-//                            " \tcompleteLines = " + getCompleteLines(bestPPP) +
-//                            " \tholeNum = " + getHoleNum(bestPPP) +
-//                            " \tbumpiness = " + getBumpiness(bestPPP) +
-//                            " \tspikiness = " + getSpikiness(bestPPP));
         }
 
-        time1 = System.nanoTime();
-        timeRamaining -= (time1 - time0) / 1000000 + 1;
-
+        // deploy the pieces
         new Thread(() -> {
             for (int i = 0; i < Math.abs(xToMove); i++) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                 }
                 this.move(xToMove / Math.abs(xToMove));
@@ -103,7 +55,7 @@ public class AIGameBoard extends GameBoard{
         new Thread(() -> {
             for (int i = 0; i < Math.abs(numToFlip); i++) {
                 try {
-                    Thread.sleep(10);
+                    Thread.sleep(30);
                 } catch (InterruptedException e) {
                 }
                 this.rotate();
@@ -116,6 +68,11 @@ public class AIGameBoard extends GameBoard{
         }
     }
 
+    /**
+     * calculate the positions
+     * @param tetromino tetromino to be placed
+     * @return the x, y, phase and spikiness of the best position in an array
+     */
     private int[] findCurrentTetrominoBestPosition(Tetromino tetromino) {
         boolean[][] mapCopy;
 
@@ -131,27 +88,6 @@ public class AIGameBoard extends GameBoard{
                     chart[i - 1][phase][2] = 99999;
                 } else {
                     chart[i - 1][phase][2] = getSpikiness(mapCopy);
-
-//                    TESTING
-//                    for (int b = 20; b > 0; b--) {
-//                        for (int a = 1; a < 13; a++) {
-//                            if (mapCopy[a][b]) {
-//                                System.out.print(1);
-//                            } else {
-//                                System.out.print(0);
-//                            }
-//                        }
-//                        System.out.println();
-//                    }
-//
-//                    System.out.println("x = " + chart[i - 1][phase][0] +
-//                            " \ty = " + chart[i - 1][phase][1] +
-//                            " \tphase = " + phase +
-//                            " \taggHeight = " + getAggHeight(mapCopy) +
-//                            " \tcompleteLines = " + getCompleteLines(mapCopy) +
-//                            " \tholeNum = " + getHoleNum(mapCopy) +
-//                            " \tbumpiness = " + getBumpiness(mapCopy) +
-//                            " \tspikiness = " + chart[i - 1][phase][2]);
                 }
             }
         }
@@ -170,6 +106,13 @@ public class AIGameBoard extends GameBoard{
         return new int[]{bestX, bestY, bestPosition, bestSpikiness};
     }
 
+    /**
+     * get the map with the tetromino for calculation
+     * @param tetromino tetromino to be placed
+     * @param phase phase for the tetromino
+     * @param xCoordinate xcoordinate or the tetromino
+     * @return the map with tetromino with it, or null if mapping not possible
+     */
     private boolean[][] getMapWithTetromino(Tetromino tetromino, int phase, int xCoordinate) {
         boolean[][] shape, mapCopy;
         int YCoordinate;
@@ -182,7 +125,7 @@ public class AIGameBoard extends GameBoard{
                 if (this.movable[a][b]) {
                     mapCopy[a][b] = false;
                 } else {
-                    mapCopy[a][b] = this.map[a][b];
+                    mapCopy[a][b] = this.map[a][b];     // generate map array without the movable
                 }
             }
         }
@@ -192,7 +135,7 @@ public class AIGameBoard extends GameBoard{
         for (int a = 21; a > 0; a--) {
             for (int x = 0; x < 4; x++) {
                 for (int y = 0; y < 4; y++) {
-                    if (shape[x][y] && mapCopy[xCoordinate + x][a + y - 1]) {
+                    if (shape[x][y] && mapCopy[xCoordinate + x][a + y - 1]) {       // find y coordinate
                         YCoordinate = a;
                         break outerLoop;
                     }
@@ -210,24 +153,34 @@ public class AIGameBoard extends GameBoard{
                         exceed = true;
                         break outerLoop;
                     } else {
-                        mapCopy[xCoordinate + x][YCoordinate + y] = true;
+                        mapCopy[xCoordinate + x][YCoordinate + y] = true;      // add tetromino
                     }
                 }
             }
         }
 
         if (exceed) {
-            return null;
+            return null;    // if not possible to map, return null
         } else {
-            return mapCopy;
+            return mapCopy;     // return new map
         }
     }
 
+    /**
+     * calculate the spikiness of the map with Genetic Programming data based on 4 heuristics
+     * @param map the map to be calculated
+     * @return the spikiness
+     */
     public int getSpikiness(boolean[][] map) {
         return (int) Math.round(51.0066 * getAggHeight(map) - 76.0666 * Math.pow(getCompleteLines(map), 2) + 35.663 * getHoleNum(map) + 18.4483 * getBumpiness(map));
     }
 
-    public int getAggHeight(boolean[][] map) {
+    /**
+     * calculate huristic one: aggregate height
+     * @param map map to be calculated
+     * @return all height added together
+     */
+    private int getAggHeight(boolean[][] map) {
         int height = 0;
         for (int i = 1; i < 13; i++) {
             height += getHeight(map, i);
@@ -235,7 +188,12 @@ public class AIGameBoard extends GameBoard{
         return height;
     }
 
-    public int getCompleteLines(boolean[][] map) {
+    /**
+     * calculate heuristic two: complete lines - the one to maximize
+     * @param map map to be calculated
+     * @return lines completed
+     */
+    private int getCompleteLines(boolean[][] map) {
         int rowDisappered = 0;
         boolean disappear;
         for (int i = 1; i < 21; i++) {
@@ -266,7 +224,7 @@ public class AIGameBoard extends GameBoard{
         return holeNum;
     }
 
-    public int getBumpiness(boolean[][] map) {
+    private int getBumpiness(boolean[][] map) {
         int height = 0;
         for (int i = 2; i < 13; i++) {
             height += Math.abs(getHeight(map, i) - getHeight(map, i - 1));

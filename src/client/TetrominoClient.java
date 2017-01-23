@@ -6,11 +6,13 @@ import java.io.*;
 import java.net.Socket;
 
 /**
- * Created by Brad Huang on 1/21/2017.
+ * @author Brad Huang
+ * @date Jan 21, 2017
+ * a central hub for client
  */
 public class TetrominoClient{
-    protected LogInGUI login;
-
+    // setup login and game GUIs
+    private LogInGUI login;
     protected TetrisGame game;
 
     protected Socket socket;
@@ -66,9 +68,5 @@ public class TetrominoClient{
         } catch (Exception e) {
             System.out.println("Failed to close socket");
         }
-    }
-
-    public void setNickName(String nickName){
-        this.nickName = nickName;
     }
 }

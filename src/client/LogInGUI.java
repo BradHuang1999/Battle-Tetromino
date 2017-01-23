@@ -14,11 +14,16 @@ import java.net.Socket;
 
 import javax.swing.*;
 
+/**
+ * @author Brad Huang
+ * Log In page GUI
+ */
 public class LogInGUI extends JFrame{
     private static JTextField usernameField;
 	private JTextField ipField, portField;
 
     public LogInGUI(TetrominoClient client){
+        // GUI Stuff
         setSize(500, 300);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -156,7 +161,7 @@ public class LogInGUI extends JFrame{
                     System.out.println("Connection made.");
                     dispose();
 
-                    new WaitLoungeGUI(client).setVisible(true);
+                    new WaitLoungeGUI(client).setVisible(true);     // if successful then go to wait lounge
                 } catch (IOException ex){
                     // connection error occuring
                     System.out.println("Connection to Server Failed");

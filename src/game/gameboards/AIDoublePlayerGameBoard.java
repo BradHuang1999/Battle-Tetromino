@@ -7,19 +7,22 @@ import java.awt.event.KeyListener;
 import static java.awt.event.KeyEvent.*;
 
 /**
- * Created by Brad Huang on 1/21/2017.
+ * @author Brad Huang
+ * @date Jan 21, 2017
  */
 public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayable{
     private boolean deployed;
     private boolean[][] rewardPiece;
     private int rewardPieceX, rewardPieceY;
 
+    // construct keylistener for rewards first so that it can be added and removed
     KeyListener rewardKL = new KeyListener(){
         @Override
         public void keyTyped(KeyEvent e){
 
         }
 
+        // alter reward piece position
         @Override
         public void keyPressed(KeyEvent e){
             switch (e.getKeyCode()){
@@ -74,10 +77,14 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
         }
     };
 
+    /**
+     * add lines on top of the gameBoard for punishment
+     * @param lineNum lines to be added, >= 0
+     */
     @Override
     public synchronized void addLinesOnTop(int lineNum){
         if (lineNum <= 0){
-            return;
+            return;     // if no line added go back
         }
         for (int i = 1; i < 13; i++){
             for (int j = 21; j > 0; j--){
@@ -87,7 +94,7 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
                         if (movable[i][j + k]){
                             movable[i][j + k] = false;
                         } else {
-                            colors[i][j + k] = Color.WHITE;
+                            colors[i][j + k] = Color.WHITE;     // add piece
                         }
                     }
                     break;
@@ -97,17 +104,19 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
         repaint();
     }
 
+    /**
+     * drop all the dangling pieces on field
+     */
     @Override
-
     public synchronized void gravityDrop(){
         for (int i = 1; i < 13; i++){
             for (int j = 21; j > 0; j--){
-                if ((!movable[i][j]) && map[i][j] && (!map[i][j - 1])){
+                if ((!movable[i][j]) && map[i][j] && (!map[i][j - 1])){     // ignore the moving ones
                     for (int k = j; k < 22; k++){
                         if (movable[i][k]){
                             break;
                         } else {
-                            map[i][k - 1] = map[i][k];
+                            map[i][k - 1] = map[i][k];      // drop the piece
                             colors[i][k - 1] = colors[i][k];
                             disappearable[i][k - 1] = disappearable[i][k];
 
@@ -122,6 +131,10 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
         repaint();
     }
 
+    /**
+     * deploy reward piece for the opponent
+     * @return the point to be delivered
+     */
     @Override
     public synchronized Point deployRewardPiece(){
         deployed = false;
@@ -150,6 +163,10 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
         return new Point(rewardPieceX, rewardPieceY);
     }
 
+    /**
+     * update the drawpiece function to include rewardpieces
+     * @param g graphic component
+     */
     @Override
     public void drawPiece(Graphics g){
         super.drawPiece(g);

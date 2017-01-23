@@ -296,7 +296,7 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
             }
 
             if (((AIDoublePlayerGameBoard)opponentGameBoard).hasUnhandledTetromino){
-                ((AIDoublePlayerGameBoard)opponentGameBoard).moveToBestPosition(this.level, this.opponentHoldTetromino != null ? this.opponentHoldTetromino : (Tetromino)this.opponentTetrominoQueue.peek(1)[0]);
+                ((AIDoublePlayerGameBoard)opponentGameBoard).moveToBestPosition(this.opponentHoldTetromino != null ? this.opponentHoldTetromino : (Tetromino)this.opponentTetrominoQueue.peek(1)[0]);
             }
 
             if (rewardMode && !iWonLevel){

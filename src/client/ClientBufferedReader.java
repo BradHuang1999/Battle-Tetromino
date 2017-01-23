@@ -1,7 +1,8 @@
 package client;
 
 /**
- * Created by Brad Huang on 1/21/2017.
+ * @author Brad Huang
+ * @date Dec 18, 2016
  */
 
 import java.io.BufferedReader;
@@ -10,8 +11,7 @@ import java.io.Reader;
 
 /**
  * Client Reader
- * read from server
- * if necessary, can display messages from server
+ * read from server and display messages from server
  */
 class ClientBufferedReader extends BufferedReader{
     public ClientBufferedReader(Reader in){
@@ -21,7 +21,7 @@ class ClientBufferedReader extends BufferedReader{
     @Override
     public String readLine() throws IOException{
         String line = super.readLine();
-        System.out.println("Server: " + line);
+        System.out.println("Server: " + line);      // read line
         return line;
     }
 }
