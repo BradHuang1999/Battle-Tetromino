@@ -7,14 +7,14 @@ import java.awt.event.KeyListener;
 import static java.awt.event.KeyEvent.*;
 
 /**
- * Created by Brad Huang on 1/21/2017.
- */
+  * @author Brad Huang
+  */
 public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
     protected boolean deployed;
     protected boolean[][] rewardPiece;
     protected int rewardPieceX, rewardPieceY;
 
-    private KeyListener rewardKL = new KeyListener(){
+    private KeyListener rewardKL = new KeyListener(){       // add keyListener for reward
         @Override
         public void keyTyped(KeyEvent e){
 
@@ -74,11 +74,18 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
         }
     };
 
+    /**
+     * update the constructor for keyListener
+     */
     public DoublePlayerGameBoard(){
         super();
         setFocusable(true);
     }
 
+    /**
+     * add lines on top
+     * @param lineNum lines to be added
+     */
     @Override
     public synchronized void addLinesOnTop(int lineNum){
         if (lineNum <= 0){
@@ -102,6 +109,9 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
         repaint();
     }
 
+    /**
+     * gravity drop
+     */
     @Override
     public synchronized void gravityDrop(){
         for (int i = 1; i < 13; i++){
@@ -126,6 +136,10 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
         repaint();
     }
 
+    /**
+     * deploy reward piece
+     * @return piece positions
+     */
     @Override
     public synchronized Point deployRewardPiece(){
         deployed = false;
@@ -154,11 +168,10 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
         return new Point(rewardPieceX, rewardPieceY);
     }
 
-    public synchronized void setRewardPiece(Point piecePosition){
-        map[piecePosition.x][piecePosition.y] = true;
-        colors[piecePosition.x][piecePosition.y] = Color.WHITE;
-    }
-
+    /**
+     * deploy a random piece
+     * @return piece position
+     */
     public synchronized Point deployRandomRewardPiece(){
         rewardPiece = new boolean[14][25];
 
@@ -188,6 +201,9 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
     }
 
     @Override
+    /**
+     * draw pieces
+     */
     public void drawPiece(Graphics g){
         super.drawPiece(g);
         g.setColor(Color.YELLOW);

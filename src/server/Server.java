@@ -1,7 +1,8 @@
 package server;
 
 /**
- * @author Dyno Zheng
+ * @author Charlie Lin & Brad Huang
+ * @date Jan 21, 2017
  */
 
 //imports for network communication
@@ -55,6 +56,10 @@ public class Server{
     JLabel userLbl;
     JButton terminateBtn;
 
+    /**
+     * constructor: set up a server
+     * @throws IOException
+     */
     public Server() throws IOException{
 
         // Variable for total number of users
@@ -166,7 +171,8 @@ public class Server{
 
         boolean waiting;
 
-        /* ConnectionHandler
+        /**
+         * ConnectionHandler
 		 * Constructor
 		 * @param User object with client information
 		 */
@@ -186,10 +192,11 @@ public class Server{
             running = true;
         }
 
-        /* run
+        /**
+         * run
 		 * executed on start of thread
 		 */
-        public void run(){
+        public synchronized void run(){
             waiting = true;
             while (waiting){
                 // Checks username and password

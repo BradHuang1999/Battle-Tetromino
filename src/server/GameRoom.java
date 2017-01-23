@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Brad Huang on 1/21/2017.
- */
+  * @author Brad Huang
+ * @date Jan 21, 2017
+  */
 public class GameRoom{
-    private Game game;
     private String gameName;
     private String gameType;
 
@@ -26,12 +26,16 @@ public class GameRoom{
         this.gameName = gameName;
         this.gameType = gameType;
 
-        this.game = (gameType.equals("Solo") || gameType.equals("Watch AI")) ? new Game() : new DoubleGame();
         this.maxPlayers = (gameType.equals("Online Battle")) ? 2 : 1;
         this.playersInRoom = 0;
     }
 
-    public void enterPlayer(User user, PrintWriter output){
+    /**
+     * enter a player
+     * @param user player
+     * @param output output
+     */
+    public synchronized void enterPlayer(User user, PrintWriter output){
         for (User player : players){
             if (player == user){
                 output.println("**permission to play\n" + gameName);
@@ -59,7 +63,13 @@ public class GameRoom{
         playersInRoom++;
     }
 
-    public void handleCommand(User user, String command, String data){
+    /**
+     * handle command
+     * @param user
+     * @param command
+     * @param data
+     */
+    public synchronized void handleCommand(User user, String command, String data){
         if (command.equals("requestTetromino")){
             Character tetrominoChar = new Character[]{'I', 'S', 'O', 'L', 'Z', 'T', 'J'}[new Random().nextInt(7)];
             char mychar;
@@ -96,28 +106,12 @@ public class GameRoom{
         }
     }
 
-    public Game getGame(){
-        return game;
-    }
-
-    public void setGame(Game game){
-        this.game = game;
-    }
-
     public String getGameName(){
         return gameName;
     }
 
-    public void setGameName(String gameName){
-        this.gameName = gameName;
-    }
-
     public String getGameType(){
         return gameType;
-    }
-
-    public void setGameType(String gameType){
-        this.gameType = gameType;
     }
 
     public int getPlayersInRoom(){
@@ -127,9 +121,4 @@ public class GameRoom{
     public int getMaxPlayers(){
         return maxPlayers;
     }
-
-    public void setMaxPlayers(int maxPlayers){
-        this.maxPlayers = maxPlayers;
-    }
-
 }

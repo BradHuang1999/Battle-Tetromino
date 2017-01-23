@@ -13,10 +13,17 @@ import java.io.PrintWriter;
 import static java.awt.event.KeyEvent.*;
 
 /**
- * Created by bradh on 1/18/2017.
+ * @author Brad Huang and Charlie Lin
+ * @date Jan 17, 2017
  */
 public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
 
+    /**
+     * constructor
+     * @param nickName nn
+     * @param iconPath ip
+     * @param output output
+     */
     public HumanVsAIGame(String nickName, String iconPath, PrintWriter output){
         super(nickName, iconPath);
 

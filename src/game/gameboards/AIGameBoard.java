@@ -212,6 +212,11 @@ public class AIGameBoard extends GameBoard{
         return rowDisappered;
     }
 
+    /**
+     * calculate heuristic three: hole numbers in the map
+     * @param map map to be calculated
+     * @return the hole numbers
+     */
     public int getHoleNum(boolean[][] map) {
         int holeNum = 0;
         for (int i = 1; i < 21; i++) {
@@ -224,6 +229,11 @@ public class AIGameBoard extends GameBoard{
         return holeNum;
     }
 
+    /**
+     * calculate heuristic four: bumpiness of the map - we want the map to be flat
+     * @param map map to be calculated
+     * @return the bumpiness of the map
+     */
     private int getBumpiness(boolean[][] map) {
         int height = 0;
         for (int i = 2; i < 13; i++) {
@@ -232,6 +242,10 @@ public class AIGameBoard extends GameBoard{
         return height;
     }
 
+    /**
+     * update the method newTetromino to fit in AI
+     * @param tetromino tetromino to be drawn
+     */
     @Override
     public void newTetromino(Tetromino tetromino) {
         hasUnhandledTetromino = true;

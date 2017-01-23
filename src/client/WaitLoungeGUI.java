@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * @author Brad Huang
+ * @author Brad Huang and Charlie Lin
  * @date Jan 19, 2017
  */
 public class WaitLoungeGUI extends JFrame{

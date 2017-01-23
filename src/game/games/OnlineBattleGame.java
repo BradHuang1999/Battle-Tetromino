@@ -1,20 +1,25 @@
 package game.games;
 
-import game.Tetromino;
 import game.TransparentPanel;
 import game.gameboards.DoublePlayerGameBoard;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.io.PrintWriter;
 
 import static java.awt.event.KeyEvent.*;
 
 /**
- * Created by bradh on 1/18/2017.
- */
+  * @author Brad Huang
+  * @date Jan 18, 2017
+  */
 public class OnlineBattleGame extends DoublePlayerGame{
+    /**
+     * constructor
+     * @param nickName nickname of the player
+     * @param iconPath file path to the icon of the player
+     * @param output output
+     */
     public OnlineBattleGame(String nickName, String iconPath, PrintWriter output){
         super(nickName, iconPath);
 
@@ -82,33 +87,6 @@ public class OnlineBattleGame extends DoublePlayerGame{
                             output.flush();
                             break;
                     }
-                }
-
-                if (rewardMode && iWonLevel){
-                    switch (e.getKeyCode()){
-                        case VK_Z:
-                            if (iWonLevel){
-                                ((DoublePlayerGameBoard)myGameBoard).gravityDrop();
-                                output.println("**game\n" + gameName + "\n" + "gravity\n ");
-                                output.flush();
-                                rewardMode = false;
-                                playing = true;
-                            }
-                            break;
-                        case VK_X:
-                            if (iWonLevel){
-                                new Thread(() -> {
-                                    Point pt = ((DoublePlayerGameBoard)opponentGameBoard).deployRewardPiece();
-                                    output.println("**game\n" + gameName + "\n" + "drop\n" + pt.x + " " + pt.y);
-                                    output.flush();
-                                    requestFocus();
-                                    rewardMode = false;
-                                    setupCountDownScreen();
-                                    playing = true;
-                                }).start();
-                            }
-                            break;
-                    }
                 } else {
                     if (e.getKeyCode() == VK_P){
                         playing = !playing;
@@ -165,18 +143,15 @@ public class OnlineBattleGame extends DoublePlayerGame{
             case "drop":
                 opponentGameBoard.moveToBottomUp2();
                 break;
-            case "gravity":
-                ((DoublePlayerGameBoard)opponentGameBoard).gravityDrop();
-                break;
-            case "setRewardPiece":
-                ((DoublePlayerGameBoard)opponentGameBoard).setRewardPiece(new Point(Integer.valueOf(data.substring(0, data.indexOf(' '))), Integer.valueOf(data.substring(data.indexOf(' ')) + 1)));
-                break;
             default:
                 System.out.println("Invalid command received");
                 break;
         }
     }
 
+    /**
+     * set up ready scrren
+     */
     @Override
     public void setupMyReadyScreen(){
         TransparentPanel waiting = new TransparentPanel();
@@ -198,6 +173,9 @@ public class OnlineBattleGame extends DoublePlayerGame{
         revalidate();
     }
 
+    /**
+     * setup opponent rs
+     */
     @Override
     void setupOpponentReadyScreen(){
         TransparentPanel waiting = new TransparentPanel();
@@ -239,6 +217,9 @@ public class OnlineBattleGame extends DoublePlayerGame{
         revalidate();
     }
 
+    /**
+     * set up game over screen
+     */
     @Override
     public void setupMyGameOverScreen(){
         String message = opponentGameOver ? "You Won!!!" : "You Lost...";
@@ -287,6 +268,9 @@ public class OnlineBattleGame extends DoublePlayerGame{
         }
     }
 
+    /**
+     * set up opponent's GOS
+     */
     @Override
     public void setupOpponentGameOverScreen(){
         String message = gameOver ? "Opponent Won" : "Opponent Lost";
@@ -335,6 +319,11 @@ public class OnlineBattleGame extends DoublePlayerGame{
         }
     }
 
+    /**
+     * set up reward screen
+     * @param myLevelScore my score in level
+     * @param opponentLevelScore opponent score in level
+     */
     @Override
     public void setupRewardModeScreen(int myLevelScore, int opponentLevelScore){
         iWonLevel = (myLevelScore - opponentLevelScore) > 0;
