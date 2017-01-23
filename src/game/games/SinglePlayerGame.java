@@ -53,7 +53,7 @@ abstract class SinglePlayerGame extends TetrisGame{
 
     protected void myGameGo(){
         for (int i = 0; i < 5; i++){
-            myTetrominoQueue.enqueue(new Tetromino());
+            requestTetromino();
         }
 
         setupCountDownScreen();
@@ -80,49 +80,53 @@ abstract class SinglePlayerGame extends TetrisGame{
             while (playing){
                 try {
                     if (myGameBoard.isAtBottom()){
-                        myGameBoard.solidifyTetromino();
                         try {
-                            Thread.sleep(40);
+                            Thread.sleep(100);
                         } catch (InterruptedException e){
                             e.printStackTrace();
                         }
 
-                        if (myGameBoard.gameOver()){
-                            playing = false;
-                            gameOver = true;
-                            break gameLoop;
-                        }
+                        if (myGameBoard.isAtBottom()) {
 
-                        tetrominoNum++;
-                        level = tetrominoNum / 35 + 1;
-                        myScore += 10 * level;
+                            myGameBoard.solidifyTetromino();
 
-                        linesDisappeared = myGameBoard.checkDisapperance();
-                        myLines += linesDisappeared;
-                        myScore += Math.pow(linesDisappeared, 2) * 100;
-
-                        levelLabel.setText("Level " + level);
-                        myLineLabel.setText("" + myLines);
-                        myScoreLabel.setText("" + myScore);
-
-                        myCurrentTetromino = myTetrominoQueue.dequeue();
-                        myGameBoard.newTetromino(myCurrentTetromino);
-
-                        requestTetromino();
-
-                        tetrominos = myTetrominoQueue.peek(3);
-                        for (int i = 0; i < 3; i++){
-                            myNextLabels[i].setIcon(((Tetromino)tetrominos[i]).getImg());
-                        }
-
-                        if (linesDisappeared > 0){
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e){
-                                e.printStackTrace();
+                            if (myGameBoard.gameOver()) {
+                                playing = false;
+                                gameOver = true;
+                                break gameLoop;
                             }
+
+                            tetrominoNum++;
+                            level = tetrominoNum / 35 + 1;
+                            myScore += 10 * level;
+
+                            linesDisappeared = myGameBoard.checkDisapperance();
+                            myLines += linesDisappeared;
+                            myScore += Math.pow(linesDisappeared, 2) * 100;
+
+                            levelLabel.setText("Level " + level);
+                            myLineLabel.setText("" + myLines);
+                            myScoreLabel.setText("" + myScore);
+
+                            myCurrentTetromino = myTetrominoQueue.dequeue();
+                            myGameBoard.newTetromino(myCurrentTetromino);
+
+                            requestTetromino();
+
+                            tetrominos = myTetrominoQueue.peek(3);
+                            for (int i = 0; i < 3; i++) {
+                                myNextLabels[i].setIcon(((Tetromino) tetrominos[i]).getImg());
+                            }
+
+                            if (linesDisappeared > 0) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            repaint();
                         }
-                        repaint();
                     }
 
                     myGameBoard.moveDown();

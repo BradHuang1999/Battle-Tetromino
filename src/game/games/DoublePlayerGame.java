@@ -144,80 +144,85 @@ abstract class DoublePlayerGame extends TetrisGame{
         new Thread(this :: checkOpponentHold).start();
     }
 
-    protected void myGameGo(){
+    protected void myGameGo() {
         int linesDisappeared;
 
         myCurrentTetromino = myTetrominoQueue.dequeue();
         myGameBoard.newTetromino(myCurrentTetromino);
 
         Object[] tetrominos = myTetrominoQueue.peek(3);
-        for (int i = 0; i < 3; i++){
-            myNextLabels[i].setIcon(((Tetromino)tetrominos[i]).getImg());
+        for (int i = 0; i < 3; i++) {
+            myNextLabels[i].setIcon(((Tetromino) tetrominos[i]).getImg());
         }
 
         gameLoop:
-        while (!gameOver){
-            while (playing){
+        while (!gameOver) {
+            while (playing) {
                 try {
-                    if (myGameBoard.isAtBottom()){
-                        myGameBoard.solidifyTetromino();
+                    if (myGameBoard.isAtBottom()) {
                         try {
                             Thread.sleep(100);
-                        } catch (InterruptedException e){
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-                        if (myGameBoard.gameOver()){
-                            gameOver = true;
-                            break gameLoop;
-                        }
+                        if (myGameBoard.isAtBottom()) {
 
-                        tetrominoNum++;
-                        myScore += 10 * level;
 
-                        linesDisappeared = myGameBoard.checkDisapperance();
-                        myLines += linesDisappeared;
-                        myScore += Math.pow(linesDisappeared, 2) * 100;
-                        try {
-                            ((DoublePlayerGameBoard)opponentGameBoard).addLinesOnTop(linesDisappeared - 1);
-                        } catch (ClassCastException e){
-                            ((AIDoublePlayerGameBoard)opponentGameBoard).addLinesOnTop(linesDisappeared - 1);
-                        }
-                        myLineLabel.setText("" + myLines);
-                        myScoreLabel.setText("" + myScore);
+                            myGameBoard.solidifyTetromino();
 
-                        myCurrentTetromino = myTetrominoQueue.dequeue();
-                        myGameBoard.newTetromino(myCurrentTetromino);
-
-                        requestTetromino();
-
-                        tetrominos = myTetrominoQueue.peek(3);
-                        for (int i = 0; i < 3; i++){
-                            myNextLabels[i].setIcon(((Tetromino)tetrominos[i]).getImg());
-                        }
-
-                        if (linesDisappeared > 0){
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e){
-                                e.printStackTrace();
+                            if (myGameBoard.gameOver()) {
+                                gameOver = true;
+                                break gameLoop;
                             }
+
+                            tetrominoNum++;
+                            myScore += 10 * level;
+
+                            linesDisappeared = myGameBoard.checkDisapperance();
+                            myLines += linesDisappeared;
+                            myScore += Math.pow(linesDisappeared, 2) * 100;
+                            try {
+                                ((DoublePlayerGameBoard) opponentGameBoard).addLinesOnTop(linesDisappeared - 1);
+                            } catch (ClassCastException e) {
+                                ((AIDoublePlayerGameBoard) opponentGameBoard).addLinesOnTop(linesDisappeared - 1);
+                            }
+                            myLineLabel.setText("" + myLines);
+                            myScoreLabel.setText("" + myScore);
+
+                            myCurrentTetromino = myTetrominoQueue.dequeue();
+                            myGameBoard.newTetromino(myCurrentTetromino);
+
+                            requestTetromino();
+
+                            tetrominos = myTetrominoQueue.peek(3);
+                            for (int i = 0; i < 3; i++) {
+                                myNextLabels[i].setIcon(((Tetromino) tetrominos[i]).getImg());
+                            }
+
+                            if (linesDisappeared > 0) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            repaint();
                         }
-                        repaint();
                     }
 
                     myGameBoard.moveDown();
 
                     Thread.sleep(level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
-            while (!playing){
+            while (!playing) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
@@ -242,47 +247,51 @@ abstract class DoublePlayerGame extends TetrisGame{
             while (playing){
                 try {
                     if (opponentGameBoard.isAtBottom()){
-                        opponentGameBoard.solidifyTetromino();
                         try {
-                            Thread.sleep(40);
+                            Thread.sleep(100);
                         } catch (InterruptedException e){
                             e.printStackTrace();
                         }
 
-                        if (opponentGameBoard.gameOver()){
-                            opponentGameOver = true;
-                            break gameLoop;
-                        }
+                        if (opponentGameBoard.isAtBottom()) {
 
-                        tetrominoNum++;
-                        opponentScore += 10 * level;
+                            opponentGameBoard.solidifyTetromino();
 
-                        linesDisappeared = opponentGameBoard.checkDisapperance();
-                        opponentLines += linesDisappeared;
-                        opponentScore += Math.pow(linesDisappeared, 2) * 100;
-                        ((DoublePlayerGameBoard)myGameBoard).addLinesOnTop(linesDisappeared - 1);
-
-                        opponentLineLabel.setText("" + opponentLines);
-                        opponentScoreLabel.setText("" + opponentScore);
-
-                        opponentCurrentTetromino = opponentTetrominoQueue.dequeue();
-                        opponentGameBoard.newTetromino(opponentCurrentTetromino);
-
-                        requestTetromino();
-
-                        tetrominos = opponentTetrominoQueue.peek(3);
-                        for (int i = 0; i < 3; i++){
-                            opponentNextLabels[i].setIcon(((Tetromino)tetrominos[i]).getImg());
-                        }
-
-                        if (linesDisappeared > 0){
-                            try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException e){
-                                e.printStackTrace();
+                            if (opponentGameBoard.gameOver()) {
+                                opponentGameOver = true;
+                                break gameLoop;
                             }
+
+                            tetrominoNum++;
+                            opponentScore += 10 * level;
+
+                            linesDisappeared = opponentGameBoard.checkDisapperance();
+                            opponentLines += linesDisappeared;
+                            opponentScore += Math.pow(linesDisappeared, 2) * 100;
+                            ((DoublePlayerGameBoard) myGameBoard).addLinesOnTop(linesDisappeared - 1);
+
+                            opponentLineLabel.setText("" + opponentLines);
+                            opponentScoreLabel.setText("" + opponentScore);
+
+                            opponentCurrentTetromino = opponentTetrominoQueue.dequeue();
+                            opponentGameBoard.newTetromino(opponentCurrentTetromino);
+
+                            requestTetromino();
+
+                            tetrominos = opponentTetrominoQueue.peek(3);
+                            for (int i = 0; i < 3; i++) {
+                                opponentNextLabels[i].setIcon(((Tetromino) tetrominos[i]).getImg());
+                            }
+
+                            if (linesDisappeared > 0) {
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            repaint();
                         }
-                        repaint();
                     }
 
                     opponentGameBoard.moveDown();
