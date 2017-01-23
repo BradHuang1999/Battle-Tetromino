@@ -15,7 +15,9 @@ import static java.awt.event.KeyEvent.*;
  */
 public class LocalBattleGame extends DoublePlayerGame{
     public LocalBattleGame(String nickName, String iconPath, PrintWriter output){
-        super(nickName, iconPath, output);
+        super(nickName, iconPath);
+
+        this.output = output;
 
         myGameBoard = new DoublePlayerGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);
@@ -196,14 +198,40 @@ public class LocalBattleGame extends DoublePlayerGame{
 
         TransparentPanel waiting = new TransparentPanel();
         waiting.setBounds(0, 0, 680, 768);
-        waiting.gameOver(message, myScore, myLines, level, false,
+        waiting.gameOver(message, myScore, myLines, level, opponentGameOver,
                 new String[][]{
-                        {"aaa", "5000"},
-                        {"bbb", "4000"},
-                        {"ccc", "3000"},
-                        {"ddd", "2000"},
-                        {"eee", "1000"}});
+                        {"AI", "1370582"},
+                        {"AI", "672806"},
+                        {"AI", "589043"},
+                        {"AI", "351792"},
+                        {"AI", "310589"}});
         getLayeredPane().add(waiting, 30);
+
+        if (opponentGameOver){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            waiting.requestFocus();
+            waiting.addKeyListener(new KeyListener(){
+                @Override
+                public void keyTyped(KeyEvent e){
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e){
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e){
+                    gameOver = true;
+                    dispose();
+                    output.println("**leaveRoom\n" + gameName);
+                    output.flush();
+                }
+            });
+        }
 
         while (true){
             try {
@@ -220,7 +248,7 @@ public class LocalBattleGame extends DoublePlayerGame{
 
         TransparentPanel waiting = new TransparentPanel();
         waiting.setBounds(680, 0, 680, 768);
-        waiting.gameOver(message, opponentScore, opponentLines, level, false,
+        waiting.gameOver(message, opponentScore, opponentLines, level, gameOver,
                 new String[][]{
                         {"aaa", "5000"},
                         {"bbb", "4000"},
@@ -228,6 +256,32 @@ public class LocalBattleGame extends DoublePlayerGame{
                         {"ddd", "2000"},
                         {"eee", "1000"}});
         getLayeredPane().add(waiting, 30);
+
+        if (gameOver){
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            waiting.requestFocus();
+            waiting.addKeyListener(new KeyListener(){
+                @Override
+                public void keyTyped(KeyEvent e){
+                }
+
+                @Override
+                public void keyPressed(KeyEvent e){
+                }
+
+                @Override
+                public void keyReleased(KeyEvent e){
+                    gameOver = true;
+                    dispose();
+                    output.println("**leaveRoom\n" + gameName);
+                    output.flush();
+                }
+            });
+        }
 
         while (true){
             try {

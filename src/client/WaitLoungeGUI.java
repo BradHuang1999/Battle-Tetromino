@@ -1,6 +1,7 @@
 package client;
 
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import game.Tetromino;
 import game.games.*;
 
 import javax.imageio.ImageIO;
@@ -310,9 +311,33 @@ public class WaitLoungeGUI extends JFrame{
                                             client.game = new OnlineBattleGame(client.nickName, client.iconPath, client.output);
                                             break;
                                     }
+                                    client.game.setGameName(userInput1);
                                     new Thread(() -> client.game.run()).start();
                                 }
                             }
+                            break;
+
+                        case "**permission to view":
+                            break;
+
+                        case "**onlineGame":
+                            userInput3 = client.input.readLine();   // roomName
+                            userInput1 = client.input.readLine();   // name of command
+                            userInput2 = client.input.readLine();   // command data
+
+                            if (userInput1.equals("enqueueTetromino")){
+                                client.game.enqueueTetromino(new Tetromino(userInput2.charAt(0)));
+                            } else {
+                                ((OnlineBattleGame)client.game).handleOpponent(userInput1, userInput2);
+                            }
+                            break;
+
+                        case "**viewGameP1":
+                            // TODO
+                            break;
+
+                        case "**viewGameP2":
+                            // TODO
                             break;
                     }
                 }
@@ -343,23 +368,15 @@ public class WaitLoungeGUI extends JFrame{
                 JPanel p = new JPanel();
                 p.setLayout(null);
 
-                JButton jButton = new JButton("play");
-                jButton.setBounds(5, 5, 62, 20);
+                JButton jButton = new JButton("PLAY!");
+                jButton.setBounds(3, 3, 140, 24);
                 jButton.addActionListener(e -> {
                     client.output.println("**enterRoomAndPlay\n" + table.getValueAt(row, 0));
                     client.output.flush();
                     lastSelected = "Play";
                 });
-                JButton viewButton = new JButton("view");
-                viewButton.addActionListener(e -> {
-                    client.output.println("**enterRoomAndView\n" + table.getValueAt(row, 0));
-                    client.output.flush();
-                    lastSelected = "View";
-                });
-                viewButton.setBounds(74, 5, 62, 20);
 
                 p.add(jButton);
-                p.add(viewButton);
                 return p;
 
             } else if (value != null && value.toString().equals("Play unclickable")){
@@ -367,21 +384,12 @@ public class WaitLoungeGUI extends JFrame{
                 p.setLayout(null);
 
                 JButton jButton = new JButton("play");
-                jButton.setBounds(5, 5, 62, 20);
+                jButton.setBounds(3, 3, 140, 24);
                 jButton.setEnabled(false);
 
-                JButton viewButton = new JButton("view");
-                viewButton.addActionListener(e -> {
-                    client.output.println("**enterRoomAndView\n" + table.getValueAt(row, 0));
-                    client.output.flush();
-                    lastSelected = "View";
-                });
-                viewButton.setBounds(74, 5, 62, 20);
+                lastSelected = "Play unclickable";
 
                 p.add(jButton);
-                p.add(viewButton);
-
-                lastSelected = "Play unclickable";
                 return p;
             }
             lastSelected = value.toString();
@@ -395,8 +403,7 @@ public class WaitLoungeGUI extends JFrame{
 
         @Override
         public boolean isCellEditable(EventObject anEvent){
-//            return false;
-            return ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
+            return client.game == null && ((JTable)anEvent.getSource()).getSelectedColumn() >= 3;
         }
 
         @Override

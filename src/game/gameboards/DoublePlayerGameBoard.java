@@ -11,10 +11,10 @@ import static java.awt.event.KeyEvent.*;
  */
 public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
     protected boolean deployed;
-    private boolean[][] rewardPiece;
-    private int rewardPieceX, rewardPieceY;
+    protected boolean[][] rewardPiece;
+    protected int rewardPieceX, rewardPieceY;
 
-    KeyListener rewardKL = new KeyListener(){
+    private KeyListener rewardKL = new KeyListener(){
         @Override
         public void keyTyped(KeyEvent e){
 
@@ -127,7 +127,7 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
     }
 
     @Override
-    public synchronized void deployRewardPiece(){
+    public synchronized Point deployRewardPiece(){
         deployed = false;
 
         rewardPiece = new boolean[14][25];
@@ -150,9 +150,16 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
         rewardPiece = null;
         removeKeyListener(rewardKL);
         repaint();
+
+        return new Point(rewardPieceX, rewardPieceY);
     }
 
-    public synchronized void deployRandomRewardPiece(){
+    public synchronized void setRewardPiece(Point piecePosition){
+        map[piecePosition.x][piecePosition.y] = true;
+        colors[piecePosition.x][piecePosition.y] = Color.WHITE;
+    }
+
+    public synchronized Point deployRandomRewardPiece(){
         rewardPiece = new boolean[14][25];
 
         while (!deployed){
@@ -176,6 +183,8 @@ public class DoublePlayerGameBoard extends GameBoard implements DoublePlayable{
 
         rewardPiece = null;
         repaint();
+
+        return new Point(rewardPieceX, rewardPieceY);
     }
 
     @Override

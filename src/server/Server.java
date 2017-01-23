@@ -320,12 +320,23 @@ public class Server{
                                     }
                                     break;
 
-                                case "**enterRoomAndWatch":
+                                case "**game":
                                     userInput1 = input.readLine();  // roomName
+                                    userInput2 = input.readLine();  // command
+                                    userInput3 = input.readLine();  // data
 
-                                    for (int i = 0; i < gameRooms.size(); i++){
-                                        if (gameRooms.get(i).getGameName().equals(userInput1)){
-                                            gameRooms.get(i).enterViewer(user, output);
+                                    for (GameRoom gameRoom : gameRooms){
+                                        if (gameRoom.getGameName().equals(userInput1)){
+                                            gameRoom.handleCommand(user, userInput2, userInput3);
+                                        }
+                                    }
+                                    break;
+
+                                case "**leaveRoom":
+                                    userInput1 = input.readLine();  // roomName
+                                    for (GameRoom gameRoom : gameRooms){
+                                        if (gameRoom.getGameName().equals(userInput1)){
+                                            gameRoom.removeUser(user);
                                         }
                                     }
                                     break;

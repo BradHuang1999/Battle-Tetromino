@@ -1,9 +1,7 @@
 package client;
 
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import game.games.TetrisGame;
 
-import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 
@@ -12,7 +10,6 @@ import java.net.Socket;
  */
 public class TetrominoClient{
     protected LogInGUI login;
-    protected WaitLoungeGUI waitLounge;
 
     protected TetrisGame game;
 
@@ -71,4 +68,7 @@ public class TetrominoClient{
         }
     }
 
+    public void setNickName(String nickName){
+        this.nickName = nickName;
+    }
 }

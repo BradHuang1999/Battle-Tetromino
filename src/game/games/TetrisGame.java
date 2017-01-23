@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.PrintWriter;
 
 
@@ -33,11 +35,39 @@ public abstract class TetrisGame extends JFrame{
 
     protected PrintWriter output;
 
-    public TetrisGame(PrintWriter output){
-        this.output = output;
+    protected String gameName;
+
+    public TetrisGame(){
+
+        setTitle(gameName);
 
         getContentPane().setLayout(null);
         getContentPane().setBackground(Color.LIGHT_GRAY);
+
+        addWindowListener(new WindowListener(){
+            public void windowClosed(WindowEvent e){
+            }
+
+            public void windowOpened(WindowEvent e){
+            }
+
+            public void windowClosing(WindowEvent e){
+                output.println("**leaveRoom\n" + gameName);
+                output.flush();
+            }
+
+            public void windowIconified(WindowEvent e){
+            }
+
+            public void windowDeiconified(WindowEvent e){
+            }
+
+            public void windowActivated(WindowEvent e){
+            }
+
+            public void windowDeactivated(WindowEvent e){
+            }
+        });
 
         iconLabel = new JLabel("");
         ImageIcon img = new ImageIcon("resources/tetronimo.png");
@@ -111,6 +141,13 @@ public abstract class TetrisGame extends JFrame{
 
     abstract void myGameGo();
 
+    public abstract void enqueueTetromino(Tetromino tetromino);
+
+    public void requestTetromino(){
+        output.println("**game\n" + gameName + "\n" + "requestTetromino\n ");
+        output.flush();
+    }
+
     /**
      * sets up a semi-transparent screen that asks if the player is ready for the game
      * proceed if the player presses a key
@@ -176,11 +213,11 @@ public abstract class TetrisGame extends JFrame{
         waiting.setBounds(0, 0, 680, 768);
         waiting.gameOver("Game Over", myScore, myLines, level, true,
                 new String[][]{
-                        {"aaa", "5000"},
-                        {"bbb", "4000"},
-                        {"//*top*ccc", "3000"},
-                        {"ddd", "2000"},
-                        {"eee", "1000"}});
+                        {"AI", "1370582"},
+                        {"AI", "672806"},
+                        {"AI", "589043"},
+                        {"AI", "351792"},
+                        {"AI", "310589"}});
         getLayeredPane().add(waiting, 30);
 
         try{
@@ -200,7 +237,10 @@ public abstract class TetrisGame extends JFrame{
 
             @Override
             public void keyReleased(KeyEvent e){
+                gameOver = true;
                 dispose();
+                output.println("**leaveRoom\n" + gameName);
+                output.flush();
             }
         });
 
@@ -241,6 +281,8 @@ public abstract class TetrisGame extends JFrame{
                     myHoldTetromino = myTetrominoQueue.dequeue();
                     myTetrominoQueue.enqueue(new Tetromino());
 
+                    requestTetromino();
+
                     Object[] tetrominos = myTetrominoQueue.peek(3);
                     for (int i = 0; i < 3; i++){
                         myNextLabels[i].setIcon(((Tetromino)tetrominos[i]).getImg());
@@ -258,4 +300,9 @@ public abstract class TetrisGame extends JFrame{
             }
         }
     }
+
+    public void setGameName(String gameName){
+        this.gameName = gameName;
+    }
+
 }

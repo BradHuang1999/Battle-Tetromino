@@ -123,7 +123,7 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
     }
 
     @Override
-    public synchronized void deployRewardPiece(){
+    public synchronized Point deployRewardPiece(){
         deployed = false;
 
         rewardPiece = new boolean[14][25];
@@ -146,6 +146,8 @@ public class AIDoublePlayerGameBoard extends AIGameBoard implements DoublePlayab
         rewardPiece = null;
         removeKeyListener(rewardKL);
         repaint();
+
+        return new Point(rewardPieceX, rewardPieceY);
     }
 
     @Override

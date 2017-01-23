@@ -12,8 +12,8 @@ import static java.awt.event.KeyEvent.VK_P;
  * Created by bradh on 1/18/2017.
  */
 abstract class SinglePlayerGame extends TetrisGame{
-    public SinglePlayerGame(PrintWriter output){
-        super(output);
+    public SinglePlayerGame(){
+        super();
 
         setSize(680, 768);
         setLocationRelativeTo(null);
@@ -75,13 +75,6 @@ abstract class SinglePlayerGame extends TetrisGame{
 
         levelLabel.setText("Level " + level);
 
-//                    + " " + ((AIGameBoard)myGameBoard).getAggHeight(myGameBoard.map)
-//                    + " " + ((AIGameBoard)myGameBoard).getCompleteLines(myGameBoard.map)
-//                    + " " + ((AIGameBoard)myGameBoard).getHoleNum(myGameBoard.map)
-//                    + " " + ((AIGameBoard)myGameBoard).getBumpiness(myGameBoard.map)
-//                    + " " + ((AIGameBoard)myGameBoard).getSpikiness(myGameBoard.map)
-//            );
-
         gameLoop:
         while (!gameOver){
             while (playing){
@@ -109,20 +102,13 @@ abstract class SinglePlayerGame extends TetrisGame{
                         myScore += Math.pow(linesDisappeared, 2) * 100;
 
                         levelLabel.setText("Level " + level);
-
-//                                    + " " + ((AIGameBoard)myGameBoard).getAggHeight(myGameBoard.map)
-//                                    + " " + ((AIGameBoard)myGameBoard).getCompleteLines(myGameBoard.map)
-//                                    + " " + ((AIGameBoard)myGameBoard).getHoleNum(myGameBoard.map)
-//                                    + " " + ((AIGameBoard)myGameBoard).getBumpiness(myGameBoard.map)
-//                                    + " " + ((AIGameBoard)myGameBoard).getSpikiness(myGameBoard.map)
-//                            );
-
                         myLineLabel.setText("" + myLines);
                         myScoreLabel.setText("" + myScore);
 
                         myCurrentTetromino = myTetrominoQueue.dequeue();
                         myGameBoard.newTetromino(myCurrentTetromino);
-                        myTetrominoQueue.enqueue(new Tetromino());
+
+                        requestTetromino();
 
                         tetrominos = myTetrominoQueue.peek(3);
                         for (int i = 0; i < 3; i++){
@@ -137,34 +123,10 @@ abstract class SinglePlayerGame extends TetrisGame{
                             }
                         }
                         repaint();
-
-//                            TESTING
-//                            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-//                            for (int b = 20; b > 0; b--){
-//                                for (int a = 1; a < 13; a++){
-//                                    if (myGameBoard.map[a][b]){
-//                                        System.out.print(1);
-//                                    } else {
-//                                        System.out.print(0);
-//                                    }
-//                                }
-//                                System.out.println();
-//                            }
-//                            System.out.println(" \taggHeight = " + ((AIGameBoard)myGameBoard).getAggHeight(myGameBoard.map) +
-//                                    " \tcompleteLines = " + ((AIGameBoard)myGameBoard).getCompleteLines(myGameBoard.map) +
-//                                    " \tholeNum = " + ((AIGameBoard)myGameBoard).getHoleNum(myGameBoard.map) +
-//                                    " \tbumpiness = " + ((AIGameBoard)myGameBoard).getBumpiness(myGameBoard.map) +
-//                                    " \tspikiness = " + ((AIGameBoard)myGameBoard).getSpikiness(myGameBoard.map)
-//                            );
-//
-//                            System.out.println();
-//                            System.out.println();
-
                     }
 
                     myGameBoard.moveDown();
 
-//                        Thread.sleep(60);
                     Thread.sleep(level < 7 ? (500 - level * 40) : (340 / (level - 5)) + 150);
                 } catch (InterruptedException e){
                     e.printStackTrace();
@@ -181,5 +143,10 @@ abstract class SinglePlayerGame extends TetrisGame{
         }
 
         setupMyGameOverScreen();
+    }
+
+    @Override
+    public void enqueueTetromino(Tetromino tetromino){
+        myTetrominoQueue.enqueue(tetromino);
     }
 }

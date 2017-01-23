@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 // User class
 class User {
-	private String nickName;
+    private String nickName;
     private String userIconPic;
 
     private ArrayList<String> newMessagesNick = new ArrayList<String>();
@@ -53,4 +53,7 @@ class User {
         return newMessagesTime;
     }
 
+    public String getNickName(){
+        return nickName;
+    }
 }

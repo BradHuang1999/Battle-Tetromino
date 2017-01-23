@@ -259,4 +259,8 @@ public class Tetromino {
     public boolean[][][] getShapes() {
         return shapes;
     }
+
+    public void setPhase(int phase){
+        this.phase = phase;
+    }
 }

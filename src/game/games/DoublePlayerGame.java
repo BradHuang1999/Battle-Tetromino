@@ -7,7 +7,6 @@ import game.gameboards.GameBoard;
 import game.queue.*;
 import javax.swing.*;
 import java.awt.*;
-import java.io.PrintWriter;
 
 /**
  * Created by bradh on 1/18/2017.
@@ -27,8 +26,8 @@ abstract class DoublePlayerGame extends TetrisGame{
 
     protected boolean iWonLevel;
 
-    public DoublePlayerGame(String nickName, String iconPath, PrintWriter output){
-        super(output);
+    public DoublePlayerGame(String nickName, String iconPath){
+        super();
 
         setSize(1360, 768);
         setLocationRelativeTo(null);
@@ -123,12 +122,12 @@ abstract class DoublePlayerGame extends TetrisGame{
             }
         }
 
+        for (int i = 0; i < 5; i++){
+            requestTetromino();
+        }
+
         setupCountDownScreen();
         repaint();
-
-        for (int i = 0; i < 5; i++){
-            enqueueTetromino();
-        }
 
         playing = true;
         gameOver = false;
@@ -189,7 +188,8 @@ abstract class DoublePlayerGame extends TetrisGame{
 
                         myCurrentTetromino = myTetrominoQueue.dequeue();
                         myGameBoard.newTetromino(myCurrentTetromino);
-                        enqueueTetromino();
+
+                        requestTetromino();
 
                         tetrominos = myTetrominoQueue.peek(3);
                         for (int i = 0; i < 3; i++){
@@ -267,7 +267,8 @@ abstract class DoublePlayerGame extends TetrisGame{
 
                         opponentCurrentTetromino = opponentTetrominoQueue.dequeue();
                         opponentGameBoard.newTetromino(opponentCurrentTetromino);
-                        enqueueTetromino();
+
+                        requestTetromino();
 
                         tetrominos = opponentTetrominoQueue.peek(3);
                         for (int i = 0; i < 3; i++){
@@ -304,11 +305,9 @@ abstract class DoublePlayerGame extends TetrisGame{
         setupOpponentGameOverScreen();
     }
 
-    private void enqueueTetromino(){
-        Tetromino tetrominoToEnqueue;
-        tetrominoToEnqueue = new Tetromino();
-        myTetrominoQueue.enqueue(tetrominoToEnqueue);
-        opponentTetrominoQueue.enqueue(tetrominoToEnqueue);
+    public void enqueueTetromino(Tetromino tetromino){
+        myTetrominoQueue.enqueue(tetromino);
+        opponentTetrominoQueue.enqueue(tetromino);
         tetrominoEnqueued++;
     }
 
@@ -318,30 +317,31 @@ abstract class DoublePlayerGame extends TetrisGame{
             level = tetrominoEnqueued / 8 + 1;
             levelLabel.setText("Level " + level);
 
-            if (level != prevLevel && !gameOver && !opponentGameOver){
-                playing = false;
-                rewardMode = true;
+            if (!(this instanceof OnlineBattleGame)){
+                if (level != prevLevel && !gameOver && !opponentGameOver){
+                    playing = false;
+                    rewardMode = true;
 
-                myLevelScore = myScore - myPrevScore;
-                opponentLevelScore = opponentScore - opponentPrevScore;
+                    myLevelScore = myScore - myPrevScore;
+                    opponentLevelScore = opponentScore - opponentPrevScore;
 
-                setupRewardModeScreen(myLevelScore, opponentLevelScore);
+                    setupRewardModeScreen(myLevelScore, opponentLevelScore);
 
-                while (rewardMode){
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e){
-                        e.printStackTrace();
+                    while (rewardMode){
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
                     }
+
+                    prevLevel = level;
+                    myPrevScore = myScore;
+                    opponentPrevScore = opponentScore;
+
+                    repaint();
                 }
-
-                prevLevel = level;
-                myPrevScore = myScore;
-                opponentPrevScore = opponentScore;
-
-                repaint();
             }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e){
@@ -361,6 +361,8 @@ abstract class DoublePlayerGame extends TetrisGame{
                 if (opponentHoldTetromino == null){
                     opponentHoldTetromino = opponentTetrominoQueue.dequeue();
                     opponentTetrominoQueue.enqueue(new Tetromino());
+
+                    requestTetromino();
 
                     Object[] tetrominos = opponentTetrominoQueue.peek(3);
                     for (int i = 0; i < 3; i++){

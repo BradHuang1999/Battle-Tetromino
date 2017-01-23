@@ -11,7 +11,9 @@ import java.io.PrintWriter;
 public class AIGame extends SinglePlayerGame implements AutoPlayable{
 
     public AIGame(PrintWriter output){
-        super(output);
+        super();
+
+        this.output = output;
 
         myGameBoard = new AIGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);

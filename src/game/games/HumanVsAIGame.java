@@ -18,7 +18,9 @@ import static java.awt.event.KeyEvent.*;
 public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
 
     public HumanVsAIGame(String nickName, String iconPath, PrintWriter output){
-        super(nickName, iconPath, output);
+        super(nickName, iconPath);
+
+        this.output = output;
 
         myGameBoard = new DoublePlayerGameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);
@@ -167,11 +169,11 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
         waiting.setBounds(0, 0, 680, 768);
         waiting.gameOver(message, myScore, myLines, level, true,
                 new String[][]{
-                        {"aaa", "5000"},
-                        {"bbb", "4000"},
-                        {"ccc", "3000"},
-                        {"ddd", "2000"},
-                        {"eee", "1000"}});
+                        {"AI", "1370582"},
+                        {"AI", "672806"},
+                        {"AI", "589043"},
+                        {"AI", "351792"},
+                        {"AI", "310589"}});
         getLayeredPane().add(waiting, 30);
 
         try {
@@ -212,11 +214,11 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
         waiting.setBounds(680, 0, 680, 768);
         waiting.gameOver(message, opponentScore, opponentLines, level, gameOver,
                 new String[][]{
-                        {"aaa", "5000"},
-                        {"bbb", "4000"},
-                        {"ccc", "3000"},
-                        {"ddd", "2000"},
-                        {"eee", "1000"}});
+                        {"AI", "1370582"},
+                        {"AI", "672806"},
+                        {"AI", "589043"},
+                        {"AI", "351792"},
+                        {"AI", "310589"}});
         getLayeredPane().add(waiting, 30);
 
         if (gameOver){
@@ -237,7 +239,10 @@ public class HumanVsAIGame extends DoublePlayerGame implements AutoPlayable{
 
                 @Override
                 public void keyReleased(KeyEvent e){
+                    gameOver = true;
                     dispose();
+                    output.println("**leaveRoom\n" + gameName);
+                    output.flush();
                 }
             });
         }

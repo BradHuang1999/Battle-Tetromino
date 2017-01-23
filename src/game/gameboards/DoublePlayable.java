@@ -10,7 +10,7 @@ public interface DoublePlayable{
 
     void gravityDrop();
 
-    void deployRewardPiece();
+    Point deployRewardPiece();
 
     void drawPiece(Graphics g);
 }

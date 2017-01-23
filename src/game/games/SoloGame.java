@@ -13,7 +13,9 @@ import static java.awt.event.KeyEvent.*;
  */
 public class SoloGame extends SinglePlayerGame{
     public SoloGame(PrintWriter output) {
-        super(output);
+        super();
+
+        this.output = output;
 
         myGameBoard = new GameBoard();
         myGameBoard.setBounds(170, 155, 338, 546);
