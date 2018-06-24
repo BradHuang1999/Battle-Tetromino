@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="BattleTetromino:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/BattleTetromino_jar</output-path>
-    <root id="archive" name="BattleTetromino.jar">
-      <element id="module-output" name="BattleTetromino" />
-    </root>
-  </artifact>
-</component>
